@@ -30,3 +30,6 @@ logs/
 
 # the small deployable sample IS committed
 !app/data/
+
+# local evaluation output (only commit results from a real run)
+eval/results_*.json

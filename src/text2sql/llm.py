@@ -27,7 +27,14 @@ class _Base:
             with urllib.request.urlopen(req, timeout=self.timeout) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
-            raise ProviderError(f"LLM provider returned HTTP {e.code}.")
+            detail = ""
+            try:                                   # providers return {"error": {"type"/"code": ...}}; never contains our key
+                err = json.loads(e.read()).get("error", {})
+                err = err if isinstance(err, dict) else {}
+                detail = " (" + ", ".join(str(err[k]) for k in ("type", "code") if err.get(k)) + ")" if (err.get("type") or err.get("code")) else ""
+            except Exception:
+                pass
+            raise ProviderError(f"LLM provider returned HTTP {e.code}{detail}.")
         except Exception as e:
             raise ProviderError(f"LLM provider unreachable ({type(e).__name__}).")
 
