@@ -1,0 +1,97 @@
+{
+  "n_train": 5152,
+  "n_test": 1304,
+  "cv": {
+    "baseline_district_room": {
+      "MAE": 69.48726341566771,
+      "MAPE": 37.428509038995244,
+      "MdAPE": 29.98326595245578,
+      "R2_log": 0.32276269843516897,
+      "bias": -28.097390414622435
+    },
+    "baseline_plus_capacity": {
+      "MAE": 60.40376436394113,
+      "MAPE": 33.457905371017766,
+      "MdAPE": 25.833976741461992,
+      "R2_log": 0.45537231715141413,
+      "bias": -19.835489157477422
+    },
+    "lightgbm_listing_features": {
+      "MAE": 55.24092019468543,
+      "MAPE": 30.970908384381886,
+      "MdAPE": 23.83211717498524,
+      "R2_log": 0.5522868431957069,
+      "bias": -13.943417069661251
+    },
+    "lightgbm_with_performance": {
+      "MAE": 52.492616769909866,
+      "MAPE": 28.844243844619996,
+      "MdAPE": 21.735568240005502,
+      "R2_log": 0.6019287400747725,
+      "bias": -13.025283547714675
+    }
+  },
+  "test": {
+    "baseline_district_room": {
+      "MAE": 66.67334739263805,
+      "MAPE": 35.818608286985764,
+      "MdAPE": 28.500804597701148,
+      "R2_log": 0.29963833457201206,
+      "bias": -26.229390337423318
+    },
+    "baseline_plus_capacity": {
+      "MAE": 60.78799463190184,
+      "MAPE": 32.463231882986065,
+      "MdAPE": 26.37330754352031,
+      "R2_log": 0.4052060130447136,
+      "bias": -18.916223159509205
+    },
+    "lightgbm_listing_features": {
+      "MAE": 53.57712755330951,
+      "MAPE": 30.01550142647526,
+      "MdAPE": 22.334835433535964,
+      "R2_log": 0.5276589717841762,
+      "bias": -11.230474078255991
+    },
+    "lightgbm_with_performance": {
+      "MAE": 50.16568245286122,
+      "MAPE": 27.819032261407862,
+      "MdAPE": 20.54883249987566,
+      "R2_log": 0.5832376442093719,
+      "bias": -10.303221506277149
+    }
+  },
+  "best_params": {
+    "num_leaves": 31,
+    "min_child_samples": 40,
+    "learning_rate": 0.03,
+    "n_estimators": 200,
+    "colsample_bytree": 1.0,
+    "subsample": 0.9,
+    "reg_lambda": 1,
+    "subsample_freq": 1
+  },
+  "bootstrap": {
+    "lightgbm_listing_features_minus_baseline_district_room": {
+      "mean_diff_MAE": -13.096219839328526,
+      "ci95": [
+        -15.782520483250568,
+        -10.531325246754228
+      ],
+      "p_model_better": 1.0
+    },
+    "lightgbm_listing_features_minus_baseline_plus_capacity": {
+      "mean_diff_MAE": -7.21086707859233,
+      "ci95": [
+        -9.345530908906815,
+        -5.121414770843892
+      ],
+      "p_model_better": 1.0
+    }
+  },
+  "interval_80pct": {
+    "nominal": 0.8,
+    "test_coverage": 0.7200920245398773,
+    "median_width_eur": 116.06632362138963
+  }
+}

@@ -10,3 +10,14 @@ nbconvert==7.17.2
 ipykernel==7.4.0
 jupyter_client==8.10.0
 pytest==9.2.0
+
+# V2 additions
+dbt-core==1.12.7
+dbt-duckdb==1.11.1
+dbt-adapters==1.24.6
+dbt-common==1.39.0
+scikit-learn==1.9.1
+lightgbm==4.7.0
+shap==0.54.1
+scipy==1.18.1
+joblib==1.6.0
