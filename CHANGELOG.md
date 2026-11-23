@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0 - AI Pricing Assistant (2026-11-23)
+- Streamlit app `app/streamlit_app.py`: Market Explorer (map, charts), Price Estimator (V2 model + revenue what-if), Scenario Simulator (night cap), Ask the data.
+- Text-to-SQL (`src/text2sql/`): provider-agnostic LLM client (env vars / Streamlit secrets, key never logged), schema context, one self-repair step, safety layer (parser-validated single SELECT, table allow-list, function deny-list, row limit, timeout, locked in-memory DuckDB without file access).
+- Evaluation: 42 questions (`eval/questions.jsonl`), `python -m eval.run_eval`, `docs/EVAL.md`. LLM accuracy not yet measured (no API key); 36 adversarial SQL tests and gold-SQL validation done.
+- Deployable sample `app/data` (2.3 MB, opaque listing ids), `app/requirements.txt`, `docs/DEPLOY.md`, `docs/CASE_STUDY.md`, `docs/CV_BULLETS.md`; 85 tests.
+- Fixes found while building V3: blank last row in `neighbourhoods.csv` created a junk `dim_neighbourhood` member (fixed in V1 SQL and dbt, DQ check and dbt not_null tests added; dbt now 73 nodes); baseline class moved to `src/baseline.py` so the model loads without shap; `.gitignore` anchored so `app/data` is tracked and secrets are ignored anywhere.
+
 ## v2.0 - Pricing and Scenarios (2026-11-23)
 - dbt-duckdb project (`dbt_project/`): staging -> intermediate -> marts + analysis, seeds for assumptions/events, 71 nodes incl. unique / not_null / accepted_values / relationships tests and business-rule tests; `dbt docs generate` supported.
 - V1 vs dbt reconciliation (`docs/V1_V2_RECONCILIATION.md`): 18 of 19 tables identical; `is_benchmark` NULL-vs-FALSE bug found by a dbt test and documented (V1 left unchanged).

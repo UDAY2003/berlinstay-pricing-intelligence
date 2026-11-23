@@ -16,6 +16,7 @@ Scrape: Inside Airbnb Berlin, 2026-09-19. Generated 2026-11-23 by `src/dq_report
 
 | check | n_bad |
 |---|---|
+| neighbourhoods.csv: blank rows (dropped) | 1 |
 | listings: duplicate ids | 0 |
 | reviews: review_id shared by 2+ listings | 3,676 |
 | calendar: duplicate (listing, date) | 0 |

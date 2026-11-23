@@ -31,7 +31,8 @@ def build_report(con) -> str:
 
     out.append("\n\n## 2. Keys, duplicates and orphans\n")
     out.append(md_table(q("""
-        SELECT 'listings: duplicate ids' AS check, COUNT(*) AS n_bad FROM (SELECT id FROM raw.listings GROUP BY id HAVING COUNT(*) > 1) UNION ALL
+        SELECT 'neighbourhoods.csv: blank rows (dropped)' AS check, COUNT(*) AS n_bad FROM raw.neighbourhoods WHERE neighbourhood IS NULL UNION ALL
+        SELECT 'listings: duplicate ids', COUNT(*) AS n_bad FROM (SELECT id FROM raw.listings GROUP BY id HAVING COUNT(*) > 1) UNION ALL
         SELECT 'reviews: review_id shared by 2+ listings', COUNT(*) FROM (SELECT review_id FROM raw.reviews GROUP BY review_id HAVING COUNT(*) > 1) UNION ALL
         SELECT 'calendar: duplicate (listing, date)', COUNT(*) FROM (SELECT listing_id, cal_date FROM stg.calendar GROUP BY ALL HAVING COUNT(*) > 1) UNION ALL
         SELECT 'calendar: listing_id not in listings', COUNT(DISTINCT listing_id) FROM raw.calendar WHERE listing_id NOT IN (SELECT id FROM raw.listings) UNION ALL

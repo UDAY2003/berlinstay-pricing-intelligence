@@ -79,3 +79,18 @@ def test_dbt_marts_match_v1_marts():
         cols = ", ".join(r[0] for r in con.execute(f"SELECT column_name FROM information_schema.columns WHERE table_schema='mart' AND table_name='{t}'").fetchall())
         n = con.execute(f"SELECT COUNT(*) FROM (SELECT {cols} FROM mart.{t} EXCEPT SELECT {cols} FROM dbt_mart.{t})").fetchone()[0]
         assert n == 0, t
+
+
+def test_predict_row_matches_training_features():
+    """The app's single-row feature builder must give the same prediction as the training pipeline for the same listing."""
+    from src.features import load_model_frame, LISTING_FEATURES
+    from src.predict import build_row, load_bundle
+    b = load_bundle(ROOT / "models" / "price_model.joblib")
+    df = load_model_frame()
+    r = df[(df.room_type == "Entire home/apt") & df.bedrooms.notna() & df.beds.notna() & df.bathrooms.notna()].iloc[3]
+    X = build_row(b, room_type=r.room_type, property_type_grp=r.property_type_grp, district=r.district, neighbourhood=r.neighbourhood,
+                  latitude=r.latitude, longitude=r.longitude, accommodates=int(r.accommodates), bedrooms=int(r.bedrooms), beds=int(r.beds),
+                  bathrooms=float(r.bathrooms), has_shared_bath=bool(r.has_shared_bath), amenities_count=int(r.amenities_count),
+                  is_superhost=bool(r.is_superhost), host_listings_count=int(r.host_listings_count), minimum_nights_avg=float(r.minimum_nights_avg))
+    ref = df.loc[[r.name], LISTING_FEATURES]
+    assert np.allclose(b["model"].predict(X), b["model"].predict(ref))

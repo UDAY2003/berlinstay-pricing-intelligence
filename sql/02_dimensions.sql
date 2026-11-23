@@ -1,11 +1,13 @@
 -- DIMENSIONS (star schema). See docs/DATA_MODEL.md for grain and keys.
 CREATE SCHEMA IF NOT EXISTS mart;
 
--- Grain: one row per Berlin Ortsteil (neighbourhood). Key: neighbourhood_key (surrogate).
+-- Grain: one row per Berlin Ortsteil (neighbourhood, 138 after dropping a blank source row). Key: neighbourhood_key (surrogate).
 CREATE OR REPLACE TABLE mart.dim_neighbourhood AS
 SELECT row_number() OVER (ORDER BY neighbourhood_group, neighbourhood) AS neighbourhood_key,
        neighbourhood_group AS district, neighbourhood
-FROM raw.neighbourhoods;
+FROM raw.neighbourhoods
+WHERE neighbourhood IS NOT NULL;   -- the source CSV ends with a blank row
+
 
 -- Grain: one row per host-size bucket (derived from calculated_host_listings_count).
 CREATE OR REPLACE TABLE mart.dim_host_type AS

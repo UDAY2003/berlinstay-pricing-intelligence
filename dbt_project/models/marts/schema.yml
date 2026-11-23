@@ -1,9 +1,11 @@
 version: 2
 models:
   - name: dim_neighbourhood
-    description: "Grain: one row per Ortsteil (139). district = Bezirk."
+    description: "Grain: one row per Ortsteil (138). district = Bezirk."
     columns:
       - {name: neighbourhood_key, tests: [unique, not_null]}
+      - {name: district, tests: [not_null]}
+      - {name: neighbourhood, tests: [not_null]}
   - name: dim_host_type
     description: "Grain: one row per host-size bucket, derived from calculated_host_listings_count."
     columns:

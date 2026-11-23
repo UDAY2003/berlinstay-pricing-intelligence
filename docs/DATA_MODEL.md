@@ -19,7 +19,7 @@ Built by `sql/00..03*.sql`; analysis by `sql/1x_*.sql`; run with `python -m src.
 | Table | Grain (one row per...) | Key | Notes |
 |---|---|---|---|
 | `dim_listing` | listing (snapshot 2026-09-19) | `listing_id` | descriptive attributes, flags, `listing_segment`; hashed `host_key` (never exported) |
-| `dim_neighbourhood` | Ortsteil (139) | `neighbourhood_key` | `district` = Bezirk (12) |
+| `dim_neighbourhood` | Ortsteil (138) | `neighbourhood_key` | `district` = Bezirk (12) |
 | `dim_host_type` | host-size bucket (4) | `host_type_key` | from `calculated_host_listings_count` (host_since etc. are empty in this scrape) |
 | `dim_date` | calendar day 2009-2027 | `date_key` (yyyymmdd) | season, weekend, Christmas window, event name (`event_is_indicative`) |
 | `fact_listing` | listing | `listing_id` (+ FK `neighbourhood_key`, `host_type_key`) | price, availability, reviews, estimated nights/revenue low-base-high |

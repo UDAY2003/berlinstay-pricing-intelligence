@@ -48,14 +48,14 @@ what income is realistic, and how do seasonality and local rules change that?*
 - [x] Power BI guide V2 pages, memo, README, CHANGELOG, tag `v2.0`
 
 ### V3 - AI Pricing Assistant
-- [ ] Streamlit app (Market Explorer, Price Estimator, Scenario Simulator, Ask the data)
-- [ ] Text-to-SQL with safety layer (read-only, SELECT only, allow-list, timeout, row limit)
-- [ ] 30+ question evaluation set + script + failure write-up
-- [ ] Streamlit Cloud deploy (small Parquet sample), `docs/DEPLOY.md`
-- [ ] `docs/CASE_STUDY.md`, polished README, CV/LinkedIn bullets, tag `v3.0`
+- [x] Streamlit app (Market Explorer, Price Estimator, Scenario Simulator, Ask the data)
+- [x] Text-to-SQL with safety layer (read-only, SELECT only, allow-list, timeout, row limit)
+- [x] 30+ question evaluation set + script + failure write-up
+- [x] Streamlit Cloud deploy (small Parquet sample), `docs/DEPLOY.md`
+- [x] `docs/CASE_STUDY.md`, polished README, CV/LinkedIn bullets, tag `v3.0`
 
 ## Open questions for the user
-None blocking V1. Needed later (V3 only): an LLM API key for the "Ask the data" assistant (provider is configurable via env vars).
+An LLM API key is still needed to MEASURE the assistant's accuracy (`python -m eval.run_eval --provider env`); everything else is done and verified without it.
 
 ## Known data limits (stated in every deliverable)
 Occupancy is an estimate (review-rate model); the calendar cannot separate booked from blocked nights;

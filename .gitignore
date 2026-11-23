@@ -1,5 +1,5 @@
 # data and databases (never commit raw data)
-data/
+/data/
 *.duckdb
 *.duckdb.wal
 *.parquet.tmp
@@ -8,7 +8,7 @@ data/
 venv/
 .venv/
 .env
-.streamlit/secrets.toml
+**/.streamlit/secrets.toml
 *.key
 
 # python / jupyter noise
@@ -27,3 +27,6 @@ dbt_project/target/
 dbt_project/logs/
 dbt_project/dbt_packages/
 logs/
+
+# the small deployable sample IS committed
+!app/data/

@@ -146,3 +146,33 @@ One entry per major step: what we did, why, the key concept, a short plain expla
 - **Concept:** pickle stores a class by module path, not by code.
 - **Interview Q:** *"Why did unpickling fail?"* **A:** "The object was serialised under `__main__`; pickle records the module path, so another process cannot find it. Define classes in importable modules."
 - **Where:** `src/price_model.py` (bottom), `tests/test_v2.py::test_model_bundle_predicts_sensible_prices`.
+
+---
+## V3 - AI Pricing Assistant
+
+### 21. Never trust LLM output: layered safety for text-to-SQL
+- **What/why:** The model's SQL goes through (1) DuckDB's parser (exactly one SELECT), (2) a table allow-list read from the parse tree, (3) a function deny-list, (4) a row limit and timeout, (5) a locked in-memory database with file access disabled. Prompt injection can at worst yield a harmless allowed SELECT.
+- **Concept:** defence in depth, least privilege, allow-lists over deny-lists, parse trees over regex.
+- **Plain explanation:** Treat the LLM like untrusted user input that happens to be well-spoken. Validate structure, restrict what the executor can touch, and limit cost, so one failed layer is not a breach.
+- **Interview Q:** *"How do you make an LLM-to-SQL feature safe?"* **A:** "Never execute raw model output: parse it, allow only a single SELECT on allow-listed tables, run it on a read-only locked connection with row and time limits, keep secrets and row data out of the prompt, and test with adversarial inputs."
+- **Where:** `src/text2sql/safety.py`, `tests/test_text2sql.py`.
+
+### 22. Evaluating text-to-SQL: execution accuracy and refusal cases
+- **What/why:** 42 questions with gold SQL; a generated query passes if its result equals the gold result (column names ignored, floats rounded, order checked only when asked). Unanswerable and adversarial questions must be refused. I did not have an API key, so I validated everything that does not need one and stated that accuracy is unmeasured.
+- **Concept:** execution accuracy vs string match; evaluating abstention; not reporting numbers you did not measure.
+- **Plain explanation:** Two different SQL strings can be equally right, so compare results. A good assistant also says "the data cannot answer that".
+- **Interview Q:** *"How do you evaluate an LLM feature?"* **A:** "A fixed question set with gold answers, an automatic scorer that compares results, separate categories including refusals, a failure log with diagnoses, and a re-run after each prompt change to check for regressions."
+- **Where:** `eval/run_eval.py`, `docs/EVAL.md`.
+
+### 23. Deploying data apps: small sample, opaque ids, minimal requirements
+- **What/why:** The app runs from a 2.3 MB parquet sample with listing ids replaced by an opaque surrogate, a separate minimal `app/requirements.txt`, secrets via Streamlit secrets/env vars, and a `.gitignore` that keeps raw data out but the sample in.
+- **Concept:** data minimisation for public apps, dependency hygiene, 12-factor config, pickled-model version sensitivity.
+- **Plain explanation:** Public hosting means anyone can read what you commit. Ship only what the app needs, nothing that identifies people, and never a key.
+- **Interview Q:** *"What did you do to make the app safe to publish?"* **A:** "Committed an aggregated-friendly sample without host or text fields, hashed listing ids, kept keys in secrets, capped questions per session, and documented what leaves the machine."
+- **Where:** `src/build_app_data.py`, `app/`, `docs/DEPLOY.md`.
+
+### 24. Late-found data bug: test the content, not just the key
+- **What/why:** Building the app's district dropdown crashed on a NULL district: `neighbourhoods.csv` ends with a blank row that had become a junk dimension member since V1. My tests checked key uniqueness, not that descriptive columns were non-null. Fixed at the source in V1 SQL and dbt, added a DQ check and `not_null` tests.
+- **Concept:** data contracts need content tests (not_null on attributes, accepted values), and fresh eyes (a new consumer) find old bugs.
+- **Interview Q:** *"Tell me about a bug you found late."* **A:** "A blank trailing CSV row became a dimension member. It never affected the numbers because joins ignored it, but a UI exposed it. I fixed it upstream, added tests for the whole class of problem, and documented it in the changelog."
+- **Where:** `sql/02_dimensions.sql`, `dbt_project/models/staging/stg_neighbourhoods.sql`, `CHANGELOG.md`.
