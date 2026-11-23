@@ -26,7 +26,7 @@ Charts from the analysis are in [`docs/img/`](docs/img). Case study: [docs/CASE_
 - Hosts with 4+ listings: about 10% of hosts, 42% of listings, 47% of estimated revenue.
 
 ## Key findings (V2)
-- dbt rebuild reproduces V1: 18 of 19 tables identical, one NULL-vs-FALSE bug found by a dbt test ([reconciliation](docs/V1_V2_RECONCILIATION.md)).
+- dbt rebuild reproduces V1: 19 of 19 tables identical after a NULL-vs-FALSE bug (found by a dbt test) was fixed in the V1 SQL ([reconciliation](docs/V1_V2_RECONCILIATION.md)).
 - LightGBM price model, tested on hosts it never saw: **MAE 53.6 EUR vs 66.7 EUR** for the district x room-type median (95% CI of the difference -15.8 to -10.5). Not better for private rooms or the 150-250 EUR band; 80% interval covers 72% ([report](docs/PRICE_MODEL_REPORT.md)).
 - 90-night cap *scenario* (not legal advice): if 20% of single-host entire homes were capped second homes, about 2.6% of estimated market revenue would be affected ([scenario](docs/REGULATION_SCENARIO.md)).
 
@@ -64,7 +64,7 @@ pip install -r requirements.txt
 #   https://data.insideairbnb.com/germany/be/berlin/2026-09-19/data/listings.csv.gz  (same folder: calendar, reviews;
 #   .../visualisations/neighbourhoods.csv and .geojson)
 python -m src.run_pipeline          # load -> star schema -> SQL analysis -> DQ report -> exports (about 25 s)
-python -m pytest -q tests           # 85 tests
+python -m pytest -q tests           # 91 tests
 python -m nbconvert --to notebook --execute --inplace notebooks/01_eda.ipynb
 ```
 

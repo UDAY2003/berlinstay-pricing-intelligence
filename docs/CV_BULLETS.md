@@ -4,7 +4,7 @@
 
 CV bullets (pick 3-4):
 - Built a DuckDB star schema (12k listings, 4.5M calendar rows, 709k reviews) with a data-quality report; found and fixed repeated review IDs that overstated 2026 demand growth by 3 percentage points.
-- Migrated 19 SQL models to dbt-duckdb (44 tests incl. relationships and business rules) and proved equivalence with set-difference reconciliation; a dbt test exposed a NULL-logic bug in the original SQL.
+- Migrated 19 SQL models to dbt-duckdb (44 tests incl. relationships and business rules) and proved equivalence with set-difference reconciliation; a dbt test exposed a NULL-logic bug in the original SQL, which I then fixed at the source.
 - Trained a LightGBM nightly-price model with host-grouped cross-validation: MAE 53.6 EUR vs 66.7 EUR for a district x room-type median baseline (95% CI of the difference -15.8 to -10.5), and reported where it does not help (private rooms, mid-price band; interval under-coverage 72% vs 80%).
 - Modelled a 90-night-cap regulation scenario with explicit assumptions and sensitivity ranges (about 2.6% of estimated market revenue at a 20% assumed share), clearly separated from legal facts.
 - Shipped a Streamlit app (market explorer, price estimator, scenario simulator) and a text-to-SQL assistant with defence-in-depth safety (parser-validated single SELECT, table allow-list, locked read-only DuckDB, row/time limits) covered by 36 adversarial tests and a 42-question evaluation harness.

@@ -100,7 +100,7 @@ One entry per major step: what we did, why, the key concept, a short plain expla
 - **Where:** `dbt_project/`, run with `cd dbt_project && dbt build --profiles-dir .`.
 
 ### 14. Reconciling a migration (before/after)
-- **What/why:** `src/reconcile_v1_dbt.py` compares each of 19 V1 tables with its dbt rebuild using `EXCEPT` in both directions. 18 are identical; `dim_listing.is_benchmark` differs for 1,687 rows (V1 gave NULL for unpriced listings because of three-valued logic, dbt gives FALSE). V1 was left untouched on purpose.
+- **What/why:** `src/reconcile_v1_dbt.py` compares each of 19 V1 tables with its dbt rebuild using `EXCEPT` in both directions. At first 18 were identical and `dim_listing.is_benchmark` differed for 1,687 rows (V1 gave NULL for unpriced listings, dbt FALSE). The dbt test caught it; later, building Power BI checks showed the exported V1 files still had the NULLs, so V1 was fixed at the source and all 19 now match.
 - **Concept:** migration validation, SQL three-valued logic (`NULL AND x`).
 - **Plain explanation:** `price BETWEEN 10 AND 1000 AND minstay < 28` is NULL, not FALSE, when price is NULL. `WHERE is_benchmark` hides this, but a dashboard would show blanks.
 - **Interview Q:** *"How do you prove a refactor didn't change results?"* **A:** "Compare old and new outputs with set differences in both directions and list every intentional difference with its cause."

@@ -1,5 +1,12 @@
 # Changelog
 
+## Post-v3.0 fixes and verification (2026-11-23)
+- Event windows verified against official sources and corrected: ITB is 16-18 Mar 2027 (was wrongly 2-4 Mar), Berlinale 10-21 Feb 2027, Pride parade 24 Jul 2027, Easter = Good Friday to Easter Monday; Festival of Lights (9-18 Oct 2026) and Marathon (27 Sep 2026) confirmed. Uplift numbers updated (Easter +5.2 pp, ITB -0.1, Pride -1.5); all event rows now `is_indicative = false`.
+- `is_benchmark` NULL bug fixed in the V1 SQL as well (it leaked NULLs into the Power BI exports); V1 and dbt now reconcile 19 of 19.
+- Pricing-gap bands made strict (below < -20%, above > 20%) so labels match definitions.
+- New `tests/test_powerbi_exports.py` recomputes every reconciliation number in the Power BI guide from the exported CSVs (data files verified; DAX itself not executed - Power BI is not installed here).
+- LLM client reports provider error codes. 91 tests.
+
 ## v3.0 - AI Pricing Assistant (2026-11-23)
 - Streamlit app `app/streamlit_app.py`: Market Explorer (map, charts), Price Estimator (V2 model + revenue what-if), Scenario Simulator (night cap), Ask the data.
 - Text-to-SQL (`src/text2sql/`): provider-agnostic LLM client (env vars / Streamlit secrets, key never logged), schema context, one self-repair step, safety layer (parser-validated single SELECT, table allow-list, function deny-list, row limit, timeout, locked in-memory DuckDB without file access).
@@ -9,7 +16,7 @@
 
 ## v2.0 - Pricing and Scenarios (2026-11-23)
 - dbt-duckdb project (`dbt_project/`): staging -> intermediate -> marts + analysis, seeds for assumptions/events, 71 nodes incl. unique / not_null / accepted_values / relationships tests and business-rule tests; `dbt docs generate` supported.
-- V1 vs dbt reconciliation (`docs/V1_V2_RECONCILIATION.md`): 18 of 19 tables identical; `is_benchmark` NULL-vs-FALSE bug found by a dbt test and documented (V1 left unchanged).
+- V1 vs dbt reconciliation (`docs/V1_V2_RECONCILIATION.md`): 18 of 19 tables identical at v2.0; `is_benchmark` NULL-vs-FALSE bug found by a dbt test (fixed in V1 SQL afterwards, now 19 of 19).
 - Price model (`src/features.py`, `src/price_model.py`, `docs/PRICE_MODEL_REPORT.md`): district x room-type median baseline vs LightGBM, host-grouped split and CV, paired bootstrap, SHAP, segment error analysis, quantile interval, out-of-fold pricing gaps. Test MAE 53.6 vs 66.7 EUR; limits reported.
 - What-if revenue calculator (`src/revenue_calculator.py`).
 - 90-night cap scenario (`src/scenario_cap.py`, `docs/REGULATION_SCENARIO.md`), clearly labelled as a scenario and not legal advice.

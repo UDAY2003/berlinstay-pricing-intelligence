@@ -56,8 +56,9 @@ SELECT
     CASE WHEN price_raw BETWEEN 10 AND 1000 THEN price_raw END        AS price_eur,
     COALESCE(minimum_nights_avg_ntm, minimum_nights) >= 28            AS is_mid_term,
     -- BENCHMARK POPULATION: priced, short-stay, price not an outlier
-    (price_raw BETWEEN 10 AND 1000
-        AND COALESCE(minimum_nights_avg_ntm, minimum_nights) < 28)    AS is_benchmark
+    -- COALESCE: three-valued logic would give NULL (not FALSE) for unpriced listings; fixed after v1.0 (found by a dbt test)
+    COALESCE(price_raw BETWEEN 10 AND 1000
+        AND COALESCE(minimum_nights_avg_ntm, minimum_nights) < 28, FALSE) AS is_benchmark
 FROM base;
 
 CREATE OR REPLACE TABLE stg.calendar AS

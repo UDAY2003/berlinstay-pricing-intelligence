@@ -131,7 +131,7 @@ Theme: one accent colour (e.g. #2a6f97) plus grey; orange only for highlights. T
 - Line chart: `dim_date[month_start]` x `Reviews` and `Reviews Rolling 12M`.
 - Line chart: `analysis_forward_availability_weekly[week_start]` x `unavailable_pct` (filter `listing_days` > 20000 to drop the partial first week); event labels as data labels on `event_name`.
 - Table: `analysis_forward_availability_events` (event, `uplift_pp`, `window_is_indicative`).
-- Text note: "Forward calendar mixes seasonality with booking lead time; unavailable = booked or blocked. Event dates marked indicative must be verified."
+- Text note: "Forward calendar mixes seasonality with booking lead time; unavailable = booked or blocked. Event dates were checked against official sources on 23 Nov 2026; re-check before relying on them."
 
 **Page 5 - Supply and Hosts**
 - Clustered bar: `dim_host_type[host_type]` x `Listings Share %` and `Revenue Share %`.

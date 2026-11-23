@@ -16,14 +16,16 @@ SELECT * FROM (VALUES
     ('high', 0.40, 6.3, 255)
 ) t(scenario, review_rate, avg_stay_nights, max_nights);
 
--- Event windows. 'is_indicative' = date range is approximate and must be checked against official calendars.
+-- Event windows. Dates verified against official sources on 2026-11-23 (see docs/DATA_MODEL.md, 'Event windows').
+-- is_indicative = TRUE would mean 'not verified'; all current rows are verified. The window itself is OUR definition
+-- (e.g. the Marathon weekend, Good Friday to Easter Monday), the dates are the source's.
 CREATE OR REPLACE TABLE ref.event_window AS
 SELECT * FROM (VALUES
-    ('Berlin Marathon',      DATE '2026-09-26', DATE '2026-09-27', TRUE),
-    ('Festival of Lights',   DATE '2026-10-09', DATE '2026-10-18', TRUE),
+    ('Berlin Marathon',      DATE '2026-09-26', DATE '2026-09-27', FALSE),
+    ('Festival of Lights',   DATE '2026-10-09', DATE '2026-10-18', FALSE),
     ('Christmas / New Year', DATE '2026-12-20', DATE '2027-01-02', FALSE),
-    ('Berlinale (film fest)',DATE '2027-02-11', DATE '2027-02-21', TRUE),
-    ('ITB (travel fair)',    DATE '2027-03-02', DATE '2027-03-04', TRUE),
-    ('Easter',               DATE '2027-03-26', DATE '2027-04-05', FALSE),
-    ('Pride / CSD',          DATE '2027-07-17', DATE '2027-07-25', TRUE)
+    ('Berlinale (film fest)',DATE '2027-02-10', DATE '2027-02-21', FALSE),
+    ('Easter',               DATE '2027-03-26', DATE '2027-03-29', FALSE),
+    ('ITB (travel fair)',    DATE '2027-03-16', DATE '2027-03-18', FALSE),
+    ('Pride / CSD',          DATE '2027-07-24', DATE '2027-07-24', FALSE)
 ) t(event_name, start_date, end_date, is_indicative);

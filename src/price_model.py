@@ -172,7 +172,7 @@ def main():
     gap = pd.DataFrame({"listing_id": df.listing_id, "price_eur": y, "pred_price_model": oof_m.round(1), "pred_price_baseline": oof_b.round(1)})
     gap["gap_eur"] = (gap.price_eur - gap.pred_price_model).round(1)
     gap["gap_pct"] = (100 * gap.gap_eur / gap.pred_price_model).round(1)
-    gap["pricing_position"] = pd.cut(gap.gap_pct, [-1000, -20, 20, 1000], labels=["below model (>20% under)", "in line (within 20%)", "above model (>20% over)"]).astype(str)
+    gap["pricing_position"] = np.select([gap.gap_pct < -20, gap.gap_pct > 20], ["below model (>20% under)", "above model (>20% over)"], "in line (within 20%)")
     (ROOT / "powerbi").mkdir(exist_ok=True)
     gap.to_csv(ROOT / "powerbi" / "fact_price_gap.csv", index=False, encoding="utf-8-sig")
     out["oof_gap"] = {"share_below": float((gap.gap_pct < -20).mean()), "share_inline": float(gap.gap_pct.between(-20, 20).mean()), "share_above": float((gap.gap_pct > 20).mean())}

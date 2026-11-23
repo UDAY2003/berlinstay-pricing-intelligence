@@ -21,10 +21,10 @@ Inside Airbnb, Berlin, scraped 19 Sep 2026 (CC BY 4.0): 12,376 listings, a 4.5M-
 |---|---|
 | Typical prices | median 181 EUR/night entire home (middle half 135-256), 91 EUR private room; Mitte 205, Reinickendorf 115 (entire homes) |
 | Realistic income (estimate, gross) | entire home median 16.8k / 26.0k / 29.1k EUR per year (low / base / high); the mean is about 31% above the median; top 10% of listings earn about a third of revenue |
-| Seasonality (review proxy) | strongest Sep (1.25), Jul, Jun, Oct; weakest Jan (0.63) and Feb (0.70); events: Festival of Lights, Christmas/New Year, Marathon weekend, Easter show higher unavailability, Berlinale/ITB/Pride none (directional only) |
+| Seasonality (review proxy) | strongest Sep (1.25), Jul, Jun, Oct; weakest Jan (0.63) and Feb (0.70); events (dates verified against official sources): Festival of Lights, Christmas/New Year, Easter, Marathon weekend show higher unavailability, Berlinale/ITB/Pride none (directional only) |
 | Pricing model | held-out MAE 53.6 vs 66.7 EUR for the baseline (95% CI of the difference -15.8 to -10.5); R2 on log price 0.53 |
 | 90-night cap scenario | at an assumed 20% share of single-host entire homes, about 2.6% of estimated market revenue affected (1.1% with 50% re-booking); 0.6-3.9% for 5-30% shares |
-| Migration | 18 of 19 tables identical to V1; one NULL-logic bug found by a dbt test |
+| Migration | 19 of 19 tables identical to V1 after fixing a NULL-logic bug that a dbt test exposed |
 | Assistant safety | 36/36 adversarial SQL strings rejected before execution; backstop, timeout and row-limit verified |
 
 ## Limitations

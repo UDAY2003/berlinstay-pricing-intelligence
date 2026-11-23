@@ -48,5 +48,8 @@ est_occupancy_rate = est_nights / 365
 Cap 255 nights = 70% of the year. Parameters live in `ref.occupancy_assumptions` (`sql/00_assumptions.sql`). **They are assumptions, not measurements.**
 Known biases: listings with 0 reviews in the last 12 months get 0 nights (understates quiet-but-booked listings); today's price is applied retroactively; host fees, cleaning fees, taxes and costs are ignored; the review rate probably differs by listing type.
 
+## Event windows
+`ref.event_window` (SQL) / `seeds/event_window.csv` (dbt). Dates checked on 2026-11-23 against: berlin marathon race day 27 Sep 2026 (official race results/organiser pages, window = race weekend 26-27 Sep), Festival of Lights 9-18 Oct 2026 (festival-of-lights.de), Berlinale 10-21 Feb 2027 (berlinale.de), ITB 16-18 Mar 2027 (itb.com; a one-time shift from early March), Berlin Pride/CSD parade 24 Jul 2027 (berlin.de, single day), Easter = Good Friday to Easter Monday 26-29 Mar 2027 (public holidays), Christmas/New Year = 20 Dec - 2 Jan (our definition). Organisers can still change dates; the window boundaries are our definition. `is_indicative` = TRUE would flag an unverified row (none now).
+
 ## Known limits
 Occupancy is an estimate; the calendar cannot separate booked from blocked nights and has **no price column**; the forward calendar mixes seasonality with booking lead time; locations are anonymised (~150 m); the data is one snapshot; reviews of delisted listings are missing; only aggregates are reported and no host is identified.

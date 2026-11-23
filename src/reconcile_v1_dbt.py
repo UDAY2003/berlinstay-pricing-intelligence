@@ -11,8 +11,7 @@ PAIRS += [("analysis", "dbt_analysis", t) for t in ["price_by_district_roomtype"
           "occupancy_revenue", "monthly_review_series", "seasonal_index", "forward_availability_weekly",
           "forward_availability_events", "review_demand_trends", "license_status", "neighbourhood_summary"]]
 # Known intentional differences (documented, with the reason)
-KNOWN = {"dim_listing": "is_benchmark: V1 returned NULL for unpriced listings (three-valued logic), dbt returns FALSE. "
-                        "Caught by the dbt not_null test. No V1 query result changes."}
+KNOWN = {}   # none now. History: dbt's not_null test found that V1's is_benchmark was NULL (not FALSE) for unpriced listings; fixed in V1 SQL after v1.0.
 
 
 def main():
@@ -33,7 +32,9 @@ def main():
     for t, n1, n2, a, b in rows:
         status = "identical" if (n1 == n2 and a == 0 and b == 0) else ("DIFFERS (known, see below)" if t in KNOWN else "DIFFERS")
         lines.append(f"| {t} | {n1:,} | {n2:,} | {a:,} | {b:,} | {status} |")
-    lines += ["", "## Known intentional differences", ""] + [f"- **{k}**: {v}" for k, v in KNOWN.items()]
+    lines += ["", "## Known intentional differences", ""] + ([f"- **{k}**: {v}" for k, v in KNOWN.items()] or [
+        "None. History: the first dbt run showed `dim_listing.is_benchmark` differing for 1,687 rows because V1 returned NULL (SQL three-valued logic) instead of FALSE for unpriced listings. "
+        "The dbt `not_null` test caught it; V1 SQL was fixed afterwards (COALESCE) so both versions now agree."])
     (DOCS_DIR / "V1_V2_RECONCILIATION.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
     return rows
