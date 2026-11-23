@@ -1,0 +1,140 @@
+﻿neighbourhood_key,district,neighbourhood
+1,Charlottenburg-Wilm.,Barstraße
+2,Charlottenburg-Wilm.,Charlottenburg Nord
+3,Charlottenburg-Wilm.,Düsseldorfer Straße
+4,Charlottenburg-Wilm.,Forst Grunewald
+5,Charlottenburg-Wilm.,Grunewald
+6,Charlottenburg-Wilm.,Halensee
+7,Charlottenburg-Wilm.,Heerstrasse
+8,Charlottenburg-Wilm.,Kantstraße
+9,Charlottenburg-Wilm.,Kurfürstendamm
+10,Charlottenburg-Wilm.,Mierendorffplatz
+11,Charlottenburg-Wilm.,Neue Kantstraße
+12,Charlottenburg-Wilm.,Otto-Suhr-Allee
+13,Charlottenburg-Wilm.,Schloß Charlottenburg
+14,Charlottenburg-Wilm.,Schmargendorf
+15,Charlottenburg-Wilm.,Volkspark Wilmersdorf
+16,Charlottenburg-Wilm.,Westend
+17,Charlottenburg-Wilm.,Wiesbadener Straße
+18,Friedrichshain-Kreuzberg,Frankfurter Allee Nord
+19,Friedrichshain-Kreuzberg,Frankfurter Allee Süd FK
+20,Friedrichshain-Kreuzberg,Karl-Marx-Allee-Nord
+21,Friedrichshain-Kreuzberg,Karl-Marx-Allee-Süd
+22,Friedrichshain-Kreuzberg,Südliche Friedrichstadt
+23,Friedrichshain-Kreuzberg,Tempelhofer Vorstadt
+24,Friedrichshain-Kreuzberg,nördliche Luisenstadt
+25,Friedrichshain-Kreuzberg,südliche Luisenstadt
+26,Lichtenberg,Alt-Hohenschönhausen Nord
+27,Lichtenberg,Alt-Hohenschönhausen Süd
+28,Lichtenberg,Alt-Lichtenberg
+29,Lichtenberg,Fennpfuhl
+30,Lichtenberg,Frankfurter Allee Süd
+31,Lichtenberg,Friedrichsfelde Nord
+32,Lichtenberg,Friedrichsfelde Süd
+33,Lichtenberg,Karlshorst
+34,Lichtenberg,"Malchow, Wartenberg und Falkenberg"
+35,Lichtenberg,Neu Lichtenberg
+36,Lichtenberg,Neu-Hohenschönhausen Nord
+37,Lichtenberg,Neu-Hohenschönhausen Süd
+38,Lichtenberg,Rummelsburger Bucht
+39,Marzahn - Hellersdorf,Biesdorf
+40,Marzahn - Hellersdorf,Hellersdorf-Nord
+41,Marzahn - Hellersdorf,Hellersdorf-Ost
+42,Marzahn - Hellersdorf,Hellersdorf-Süd
+43,Marzahn - Hellersdorf,Kaulsdorf
+44,Marzahn - Hellersdorf,Mahlsdorf
+45,Marzahn - Hellersdorf,Marzahn-Mitte
+46,Marzahn - Hellersdorf,Marzahn-Nord
+47,Marzahn - Hellersdorf,Marzahn-Süd
+48,Mitte,Alexanderplatz
+49,Mitte,Brunnenstr. Nord
+50,Mitte,Brunnenstr. Süd
+51,Mitte,Moabit Ost
+52,Mitte,Moabit West
+53,Mitte,Osloer Straße
+54,Mitte,Parkviertel
+55,Mitte,Regierungsviertel
+56,Mitte,Tiergarten Süd
+57,Mitte,Wedding Zentrum
+58,Neukölln,Britz
+59,Neukölln,Buckow
+60,Neukölln,Buckow Nord
+61,Neukölln,Gropiusstadt
+62,Neukölln,Köllnische Heide
+63,Neukölln,Neuköllner Mitte/Zentrum
+64,Neukölln,Reuterstraße
+65,Neukölln,Rixdorf
+66,Neukölln,Rudow
+67,Neukölln,Schillerpromenade
+68,Pankow,Blankenburg/Heinersdorf/Märchenland
+69,Pankow,Blankenfelde/Niederschönhausen
+70,Pankow,Buch
+71,Pankow,Buchholz
+72,Pankow,Helmholtzplatz
+73,Pankow,Karow
+74,Pankow,Pankow Süd
+75,Pankow,Pankow Zentrum
+76,Pankow,Prenzlauer Berg Nord
+77,Pankow,Prenzlauer Berg Nordwest
+78,Pankow,Prenzlauer Berg Ost
+79,Pankow,Prenzlauer Berg Süd
+80,Pankow,Prenzlauer Berg Südwest
+81,Pankow,Schönholz/Wilhelmsruh/Rosenthal
+82,Pankow,Weißensee
+83,Pankow,Weißensee Ost
+84,Reinickendorf,MV 1
+85,Reinickendorf,MV 2
+86,Reinickendorf,Nord 1
+87,Reinickendorf,Nord 2
+88,Reinickendorf,Ost 1
+89,Reinickendorf,Ost 2
+90,Reinickendorf,West 1
+91,Reinickendorf,West 2
+92,Reinickendorf,West 3
+93,Reinickendorf,West 4
+94,Reinickendorf,West 5
+95,Spandau,Brunsbütteler Damm
+96,Spandau,Falkenhagener Feld
+97,Spandau,Gatow / Kladow
+98,Spandau,Hakenfelde
+99,Spandau,Haselhorst
+100,Spandau,Heerstraße Nord
+101,Spandau,Siemensstadt
+102,Spandau,Spandau Mitte
+103,Spandau,Wilhelmstadt
+104,Steglitz - Zehlendorf,Albrechtstr.
+105,Steglitz - Zehlendorf,Drakestr.
+106,Steglitz - Zehlendorf,Lankwitz
+107,Steglitz - Zehlendorf,Ostpreußendamm
+108,Steglitz - Zehlendorf,Schloßstr.
+109,Steglitz - Zehlendorf,Teltower Damm
+110,Steglitz - Zehlendorf,Zehlendorf  Nord
+111,Steglitz - Zehlendorf,Zehlendorf  Südwest
+112,Tempelhof - Schöneberg,Friedenau
+113,Tempelhof - Schöneberg,Lichtenrade
+114,Tempelhof - Schöneberg,Mariendorf
+115,Tempelhof - Schöneberg,Marienfelde
+116,Tempelhof - Schöneberg,Schöneberg-Nord
+117,Tempelhof - Schöneberg,Schöneberg-Süd
+118,Tempelhof - Schöneberg,Tempelhof
+119,Treptow - Köpenick,Adlershof
+120,Treptow - Köpenick,Allende-Viertel
+121,Treptow - Köpenick,Alt  Treptow
+122,Treptow - Köpenick,Altglienicke
+123,Treptow - Köpenick,Altstadt-Kietz
+124,Treptow - Köpenick,Baumschulenweg
+125,Treptow - Köpenick,Bohnsdorf
+126,Treptow - Köpenick,Dammvorstadt
+127,Treptow - Köpenick,Friedrichshagen
+128,Treptow - Köpenick,Grünau
+129,Treptow - Köpenick,Johannisthal
+130,Treptow - Köpenick,Kölln. Vorstadt/Spindlersf.
+131,Treptow - Köpenick,Köpenick-Nord
+132,Treptow - Köpenick,Köpenick-Süd
+133,Treptow - Köpenick,Müggelheim
+134,Treptow - Köpenick,Niederschöneweide
+135,Treptow - Köpenick,Oberschöneweide
+136,Treptow - Köpenick,Plänterwald
+137,Treptow - Köpenick,Rahnsdorf/Hessenwinkel
+138,Treptow - Köpenick,Schmöckwitz/Karolinenhof/Rauchfangswerder
+139,,
