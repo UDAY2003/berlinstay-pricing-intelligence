@@ -87,7 +87,9 @@ def footer():
 
 st.title("BerlinStay Pricing Intelligence")
 st.caption("How should a Berlin host price a listing, what income is realistic, and how do seasonality and local rules change that?")
-tab1, tab2, tab3, tab4 = st.tabs(["Market Explorer", "Price Estimator", "Scenario Simulator", "Ask the data"])
+TAB_NAMES = ["Market Explorer", "Price Estimator", "Scenario Simulator", "Ask the data"]
+_sel = st.query_params.get("tab")                    # deep link: ?tab=Price%20Estimator
+tab1, tab2, tab3, tab4 = st.tabs(TAB_NAMES, default=_sel if _sel in TAB_NAMES else None)
 
 # ================================================================ 1. Market Explorer
 with tab1:
@@ -220,7 +222,9 @@ with tab3:
     st.plotly_chart(fig, width="stretch")
     t = dd[dd.pool_listings > 0].sort_values("lost_revenue", ascending=False)[["district", "pool_listings", "pool_over_cap_pct", "lost_nights", "lost_revenue"]]
     t["lost_revenue"] = (t.lost_revenue / 1e6).round(2)
-    st.dataframe(t.rename(columns={"pool_over_cap_pct": "pool over cap %", "lost_revenue": "lost revenue EUR m", "lost_nights": "lost nights"}), hide_index=True, width="stretch")
+    t["pool_over_cap_pct"] = t.pool_over_cap_pct.round(0).astype(int)
+    t["lost_nights"] = t.lost_nights.round(0).astype(int)
+    st.table(t.rename(columns={"pool_over_cap_pct": "pool over cap %", "lost_revenue": "lost revenue EUR m", "lost_nights": "lost nights"}).set_index("district"))
     st.caption("Assumptions: capped listings keep min(estimated nights, cap) and lose price x (nights - cap); no price response, no change in registrations, no enforcement modelling. Estimates throughout.")
     footer()
 

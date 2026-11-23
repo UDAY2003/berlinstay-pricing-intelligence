@@ -10,11 +10,13 @@ One evolving portfolio project built in three releases on public Inside Airbnb d
 | **V2 Pricing and Scenarios** | **done (v2.0)** | dbt-duckdb models and tests, LightGBM price model vs median baseline, revenue what-if, 90-night-cap scenario |
 | **V3 AI Pricing Assistant** | **done (v3.0)** | Streamlit app (market explorer, price estimator, scenario simulator) and a guarded text-to-SQL "Ask the data" assistant |
 
-**Live app:** _placeholder: add your Streamlit Community Cloud URL after deploying ([steps](docs/DEPLOY.md))_
+**Live app:** _not deployed yet - add your Streamlit Community Cloud URL here after following [docs/DEPLOY.md](docs/DEPLOY.md)_
 
-| Market Explorer | Price Estimator | Scenario Simulator | Ask the data |
-|---|---|---|---|
-| _screenshot placeholder_ | _screenshot placeholder_ | _screenshot placeholder_ | _screenshot placeholder_ |
+| Market Explorer | Price Estimator |
+|---|---|
+| ![Market Explorer](docs/img/app_market_explorer.png) | ![Price Estimator](docs/img/app_price_estimator.png) |
+| **Scenario Simulator** | **Ask the data (demo mode, no key)** |
+| ![Scenario Simulator](docs/img/app_scenario_simulator.png) | ![Ask the data](docs/img/app_ask_the_data.png) |
 
 Charts from the analysis are in [`docs/img/`](docs/img). Case study: [docs/CASE_STUDY.md](docs/CASE_STUDY.md).
 
