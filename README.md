@@ -2,7 +2,7 @@
 
 > How should a host or small property manager in Berlin price a listing, what income is realistic, and how do seasonality and local rules change that?
 
-One evolving portfolio project built in three releases on public Inside Airbnb data for Berlin.
+One evolving portfolio project built in three releases on public Inside Airbnb data for Berlin. Repository: https://github.com/UDAY2003/berlinstay-pricing-intelligence (tags `v1.0`, `v2.0`, `v3.0`).
 
 | Release | Status | Content |
 |---|---|---|

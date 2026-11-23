@@ -12,9 +12,12 @@ Opens http://localhost:8501. Without an LLM key the "Ask the data" tab runs in d
 ## 1. Prepare the repository
 1. Refresh the sample if data or model changed: `python -m src.run_v2 && python -m src.build_app_data`
 2. Check nothing sensitive is tracked: `git ls-files | grep -E "raw|duckdb|secrets.toml$"` must print nothing (`secrets.toml.example` is fine).
-3. Push to a **GitHub** repository (public is simplest for the free tier). `data/` (raw data, database) is git-ignored by design; `app/data/` is committed.
+3. Push to GitHub (done for this project; public is simplest for the free tier). `data/` (raw data, database) is git-ignored by design; `app/data/` is committed.
 
 ## 2. Create the app
+The repository is already on GitHub: https://github.com/UDAY2003/berlinstay-pricing-intelligence. A pre-filled deploy link (you still sign in to Streamlit with GitHub and confirm; if the form opens empty, enter the values below by hand):
+https://share.streamlit.io/deploy?repository=UDAY2003/berlinstay-pricing-intelligence&branch=main&mainModule=app/streamlit_app.py
+
 1. Go to https://share.streamlit.io, sign in with GitHub, **Create app**, pick the repository and branch `main`.
 2. **Main file path:** `app/streamlit_app.py`
 3. **Advanced settings:** choose a Python version (the project was developed on 3.13; 3.12 also works with the pinned packages if 3.13 is unavailable) and paste secrets (next step).
