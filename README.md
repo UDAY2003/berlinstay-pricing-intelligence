@@ -6,8 +6,8 @@ One evolving portfolio project built in three releases on public Inside Airbnb d
 
 | Release | Status | Content |
 |---|---|---|
-| **V1 Market Analytics** | **done (v1.0)** | DuckDB star schema, SQL analysis pack, data-quality report, EDA notebook, Power BI guide, business memo |
-| V2 Pricing and Scenarios | planned | dbt models and tests, price model vs baseline, revenue calculator, 90-night-cap scenario |
+| **V1 Market Analytics** | done (v1.0) | DuckDB star schema, SQL analysis pack, data-quality report, EDA notebook, Power BI guide, business memo |
+| **V2 Pricing and Scenarios** | **done (v2.0)** | dbt-duckdb models and tests, LightGBM price model vs median baseline, revenue what-if, 90-night-cap scenario |
 | V3 AI Pricing Assistant | planned | Streamlit app with a safe text-to-SQL "Ask the data" assistant |
 
 **Live app:** _placeholder (V3)_ | **Screenshots:** _placeholders (V3)_ - V1 charts are in [`docs/img/`](docs/img).
@@ -19,7 +19,12 @@ One evolving portfolio project built in three releases on public Inside Airbnb d
 - Review-based seasonality: strongest in September, July, June, October; weakest in January-February. Review activity Jan-Aug 2026 is +15.4% vs 2025.
 - Hosts with 4+ listings: about 10% of hosts, 42% of listings, 47% of estimated revenue.
 
-Read the full [business memo](docs/MEMO_V1.md).
+## Key findings (V2)
+- dbt rebuild reproduces V1: 18 of 19 tables identical, one NULL-vs-FALSE bug found by a dbt test ([reconciliation](docs/V1_V2_RECONCILIATION.md)).
+- LightGBM price model, tested on hosts it never saw: **MAE 53.6 EUR vs 66.7 EUR** for the district x room-type median (95% CI of the difference -15.8 to -10.5). Not better for private rooms or the 150-250 EUR band; 80% interval covers 72% ([report](docs/PRICE_MODEL_REPORT.md)).
+- 90-night cap *scenario* (not legal advice): if 20% of single-host entire homes were capped second homes, about 2.6% of estimated market revenue would be affected ([scenario](docs/REGULATION_SCENARIO.md)).
+
+Read the full [business memo](docs/MEMO_V2.md) (V1 version: [MEMO_V1](docs/MEMO_V1.md)).
 
 ## Architecture
 ```
@@ -39,8 +44,16 @@ pip install -r requirements.txt
 #   https://data.insideairbnb.com/germany/be/berlin/2026-09-19/data/listings.csv.gz  (same folder: calendar, reviews;
 #   .../visualisations/neighbourhoods.csv and .geojson)
 python -m src.run_pipeline          # load -> star schema -> SQL analysis -> DQ report -> exports (about 25 s)
-python -m pytest -q tests           # 20 data tests
+python -m pytest -q tests           # 28 tests
 python -m nbconvert --to notebook --execute --inplace notebooks/01_eda.ipynb
+```
+
+## Reproduce V2
+```bash
+pip install -r requirements.txt
+python -m src.run_v2                                  # V1 pipeline -> dbt build (71 nodes) -> reconciliation -> price model -> scenario -> tests
+cd dbt_project && dbt build --profiles-dir . && dbt docs generate --profiles-dir . && dbt docs serve --profiles-dir .   # model docs and lineage
+python -m src.revenue_calculator                      # example what-if
 ```
 
 ## Repo map
@@ -48,6 +61,10 @@ python -m nbconvert --to notebook --execute --inplace notebooks/01_eda.ipynb
 |---|---|
 | `sql/` | numbered SQL: `00-03` build (assumptions, staging, dimensions, facts), `10-18` analysis pack |
 | `src/` | loader, SQL runner, data-quality report, exports, one-command pipeline |
+| `dbt_project/` | V2 dbt-duckdb models, seeds, tests |
+| `src/features.py`, `src/price_model.py`, `models/` | V2 features, model training, saved model bundle |
+| `src/revenue_calculator.py`, `src/scenario_cap.py` | V2 what-if tool and cap scenario |
+| `docs/PRICE_MODEL_REPORT.md`, `docs/REGULATION_SCENARIO.md`, `docs/V1_V2_RECONCILIATION.md` | V2 generated reports |
 | `notebooks/01_eda.ipynb` | EDA with written takeaways |
 | `powerbi/`, `docs/POWERBI_GUIDE.md` | files and step-by-step build guide (DAX, pages, model) |
 | `docs/DATA_MODEL.md` | grain, keys, occupancy formula and assumptions |

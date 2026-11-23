@@ -189,6 +189,18 @@ def main():
     bundle = {"model": mf, "q10": qs[0.1], "q90": qs[0.9], "features": LISTING_FEATURES,
               "categories": {c: list(df[c].cat.categories) for c in ["room_type", "property_type_grp", "district", "neighbourhood"]},
               "baseline": MedianBaseline(BASE_KEYS).fit(df, y), "trained_on": int(len(df)), "note": "refit on all benchmark listings; honest metrics come from the train/test protocol"}
+    # ---- out-of-fold pricing gaps for Power BI (every listing is predicted by a model that never saw its host) ----
+    oof_m, oof_b = np.zeros(len(df)), np.zeros(len(df))
+    for tr, va in GroupKFold(n_splits=5).split(df, y, groups=df.host_key):
+        oof_m[va] = np.exp(lgb_model(best_params, None).fit(df.iloc[tr][LISTING_FEATURES], np.log(y.iloc[tr])).predict(df.iloc[va][LISTING_FEATURES]))
+        oof_b[va] = MedianBaseline(BASE_KEYS).fit(df.iloc[tr], y.iloc[tr]).predict(df.iloc[va])
+    gap = pd.DataFrame({"listing_id": df.listing_id, "price_eur": y, "pred_price_model": oof_m.round(1), "pred_price_baseline": oof_b.round(1)})
+    gap["gap_eur"] = (gap.price_eur - gap.pred_price_model).round(1)
+    gap["gap_pct"] = (100 * gap.gap_eur / gap.pred_price_model).round(1)
+    gap["pricing_position"] = pd.cut(gap.gap_pct, [-1000, -20, 20, 1000], labels=["below model (>20% under)", "in line (within 20%)", "above model (>20% over)"]).astype(str)
+    (ROOT / "powerbi").mkdir(exist_ok=True)
+    gap.to_csv(ROOT / "powerbi" / "fact_price_gap.csv", index=False, encoding="utf-8-sig")
+    out["oof_gap"] = {"share_below": float((gap.gap_pct < -20).mean()), "share_inline": float(gap.gap_pct.between(-20, 20).mean()), "share_above": float((gap.gap_pct > 20).mean())}
     joblib.dump(bundle, MODEL_DIR / "price_model.joblib")
     (ROOT / "reports" / "price_model_metrics.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
     write_report(out, seg, imp)
@@ -227,7 +239,8 @@ def write_report(o, seg, imp):
           ("; ".join(f"{r.segment}={r.level} ({r.MAPE_gbm:.1f}% vs {r.MAPE_baseline:.1f}%, n={r.n})" for r in worse.itertuples()) or "none") + ".",
           "Both models under-predict on average (negative bias): prices are right-skewed and the expensive tail is hard to predict from the available features. "
           "The 80% interval is too narrow (coverage below nominal), so present it as an approximate range, not a guarantee.",
-          "The bootstrap resamples listings as independent although hosts are clustered, so the intervals are somewhat optimistic; the CV (grouped by host) points the same way."]
+          "The bootstrap resamples listings as independent although hosts are clustered, so the intervals are somewhat optimistic; the CV (grouped by host) points the same way.",
+          "Price bands are defined on the actual price, so any model that shrinks toward the centre looks relatively better in the middle bands and worse in the tails; read the band rows with that in mind."]
     L += ["", "![segments](img/11_model_error_segments.png)", "",
           "## Limits (read before using the model)", "",
           "- Listed prices are asking prices, not transaction prices; the model predicts what comparable hosts ask, not what guests pay.",
@@ -240,4 +253,6 @@ def write_report(o, seg, imp):
 
 
 if __name__ == "__main__":
-    main()
+    # import under the real module name so pickled objects (MedianBaseline) load from anywhere, e.g. the V3 app
+    from src.price_model import main as _main
+    _main()

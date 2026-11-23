@@ -88,3 +88,61 @@ One entry per major step: what we did, why, the key concept, a short plain expla
 - **Plain explanation:** The mean (182 EUR) is pulled up by luxury listings; the median (150 EUR) is what a typical listing charges. Districts with under 20 listings are greyed out rather than coloured misleadingly.
 - **Interview Q:** *"Why Spearman instead of Pearson?"* **A:** "Prices are skewed with outliers and relationships are monotonic rather than linear; rank correlation is robust to both."
 - **Where:** `notebooks/01_eda.ipynb`.
+
+---
+## V2 - Pricing and Scenarios
+
+### 13. dbt: models, layers, tests, docs
+- **What/why:** V1's plain SQL became a dbt-duckdb project (`dbt_project/`): `staging` views -> `intermediate` tables (flags, occupancy estimates) -> `marts` (star schema) + `analysis`. Assumptions and event windows became **seeds** (CSV files under version control). 71 nodes: models plus tests (unique, not_null, accepted_values, relationships, and singular tests for business rules such as "occupancy never exceeds 255 nights").
+- **Concept:** declarative transformations with a dependency graph (`ref()`), tests as code, generated docs (`dbt docs generate`).
+- **Plain explanation:** `ref('fact_listing')` tells dbt the build order and lets it draw a lineage graph. A test is a query that must return zero rows; `dbt build` runs models and their tests in dependency order and skips what depends on a failure.
+- **Interview Q:** *"Why dbt instead of SQL scripts?"* **A:** "Dependencies are explicit so the order is derived, not hand-maintained; tests and documentation live next to the model; the same project works across environments. My dbt `not_null` test immediately found a bug in my own V1 SQL."
+- **Where:** `dbt_project/`, run with `cd dbt_project && dbt build --profiles-dir .`.
+
+### 14. Reconciling a migration (before/after)
+- **What/why:** `src/reconcile_v1_dbt.py` compares each of 19 V1 tables with its dbt rebuild using `EXCEPT` in both directions. 18 are identical; `dim_listing.is_benchmark` differs for 1,687 rows (V1 gave NULL for unpriced listings because of three-valued logic, dbt gives FALSE). V1 was left untouched on purpose.
+- **Concept:** migration validation, SQL three-valued logic (`NULL AND x`).
+- **Plain explanation:** `price BETWEEN 10 AND 1000 AND minstay < 28` is NULL, not FALSE, when price is NULL. `WHERE is_benchmark` hides this, but a dashboard would show blanks.
+- **Interview Q:** *"How do you prove a refactor didn't change results?"* **A:** "Compare old and new outputs with set differences in both directions and list every intentional difference with its cause."
+- **Where:** `docs/V1_V2_RECONCILIATION.md`, `src/reconcile_v1_dbt.py`.
+
+### 15. Honest model comparison: baseline first, grouped split, bootstrap
+- **What/why:** Baseline = district x room-type median (plus a stronger one with capacity). LightGBM tuned by a small random search under **GroupKFold by host**; test touched once; paired bootstrap on the MAE difference. Result: MAE 53.6 vs 66.7 EUR (-13.1, 95% CI -15.8 to -10.5); but it is not better for private rooms or the 150-250 EUR band and the 80% interval covers only 72%.
+- **Concept:** baseline, leakage, group-aware splitting (the same host's listings are near-duplicates), cross-validation, MAE vs MAPE, bootstrap confidence intervals, calibration of prediction intervals.
+- **Plain explanation:** A model is only good relative to a simple alternative. If one host's 20 identical flats land in both train and test, the model "remembers" them and looks better than it is, so we split by host. We report where the model fails, not just where it wins.
+- **Interview Q:** *"How do you know your model beats the baseline?"* **A:** "Same host-grouped folds for both, held-out test used once, a paired bootstrap of the error difference, and a segment breakdown showing where the gain disappears."
+- **Where:** `src/price_model.py`, `docs/PRICE_MODEL_REPORT.md`.
+
+### 16. Feature choice and leakage by design
+- **What/why:** The main model uses only what a host knows before listing (size, type, location, amenities, host size). Review scores/counts are an ablation: they would improve MAE by about 3 EUR, but a new listing has none and they partly encode demand.
+- **Concept:** target leakage vs availability at prediction time; ablation study.
+- **Plain explanation:** Ask "would I have this value at the moment I need the prediction?" If not, the feature does not belong in the deployable model.
+- **Interview Q:** *"What is data leakage? An example from your project?"* **A:** "Information from the future or from the outcome leaking into training. Reviews are an outcome of past pricing and demand, so I excluded them from the main model and kept them only as a labelled comparison."
+- **Where:** `src/features.py`, `tests/test_v2.py::test_features_exclude_outcome_columns`.
+
+### 17. Explainability: SHAP
+- **What/why:** TreeSHAP on the test set: room type, bedrooms, neighbourhood and capacity drive predictions; the plot is in the report.
+- **Concept:** SHAP = each feature's additive contribution to a prediction (here on log price), averaged for global importance.
+- **Plain explanation:** Because the model predicts log price, a SHAP value of 0.1 means about +10% for that feature in that listing. Importance is not causation.
+- **Interview Q:** *"Why SHAP over built-in feature importance?"* **A:** "It is consistent, signed and local, so I can explain a single prediction, whereas split-count importance is biased toward high-cardinality features."
+- **Where:** `docs/PRICE_MODEL_REPORT.md`, `reports/price_model_shap_importance.csv`.
+
+### 18. What-if calculator: association is not elasticity
+- **What/why:** `RevenueCalculator` uses comparable listings (with fallbacks when fewer than 30), the listing's price position, and reports p25/median/p75 of estimated nights, plus the occupancy-model uncertainty separately. It warns when estimates hit the 255-night ceiling or extrapolate.
+- **Concept:** comparable-set estimation, uncertainty decomposition (between listings vs model assumptions), refusing to over-claim causality.
+- **Plain explanation:** The data shows dearer listings have fewer estimated nights, but busy listings may simply be cheaper for other reasons. We show the pattern, not a demand curve.
+- **Interview Q:** *"Can your tool tell a host whether to raise the price?"* **A:** "Not causally. It shows what comparable listings at that price level earn, with a range and warnings; an experiment or the host's own booking data would be needed for elasticity."
+- **Where:** `src/revenue_calculator.py`, `tests/test_v2.py`.
+
+### 19. Scenario analysis under unknowns
+- **What/why:** The 90-night cap scenario cannot know which listings are second homes, so it parametrises the share (5-30%), the pool, displacement (0/50%) and the occupancy scenario, and reports a sensitivity table. Regulation is described only from the official source with an explicit "verify" note.
+- **Concept:** scenario vs forecast, sensitivity analysis, stating assumptions, separating facts you can cite from numbers you assume.
+- **Plain explanation:** When a key input is unknowable, don't pick one value; show how the answer moves across plausible values.
+- **Interview Q:** *"How did you deal with the missing second-home flag?"* **A:** "Made it an explicit assumption, defined a plausible pool, swept the share, and presented results as ranges with the ranking across districts as the more robust finding."
+- **Where:** `src/scenario_cap.py`, `docs/REGULATION_SCENARIO.md`.
+
+### 20. Engineering detail: pickling and entry points
+- **What/why:** Running `python -m src.price_model` stores the baseline class as `__main__.MedianBaseline`, which fails to load elsewhere (V3). The entry point now re-imports the module so it pickles as `src.price_model.MedianBaseline`; a test loads the bundle.
+- **Concept:** pickle stores a class by module path, not by code.
+- **Interview Q:** *"Why did unpickling fail?"* **A:** "The object was serialised under `__main__`; pickle records the module path, so another process cannot find it. Define classes in importable modules."
+- **Where:** `src/price_model.py` (bottom), `tests/test_v2.py::test_model_bundle_predicts_sensible_prices`.

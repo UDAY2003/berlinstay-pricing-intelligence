@@ -93,5 +93,10 @@
     "nominal": 0.8,
     "test_coverage": 0.7200920245398773,
     "median_width_eur": 116.06632362138963
+  },
+  "oof_gap": {
+    "share_below": 0.2771065675340768,
+    "share_inline": 0.4448574969021066,
+    "share_above": 0.2780359355638166
   }
 }

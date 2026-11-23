@@ -41,11 +41,11 @@ what income is realistic, and how do seasonality and local rules change that?*
 - [x] Tests (`tests/`), README, CHANGELOG, LEARNING_NOTES, tag `v1.0`
 
 ### V2 - Pricing and Scenarios
-- [ ] dbt-duckdb project (staging -> intermediate -> marts) + tests + docs; before/after reconciliation with V1
-- [ ] Feature engineering, baseline (district x room-type median) vs LightGBM/sklearn, CV, MAE/MAPE, SHAP, segment error analysis (honest comparison)
-- [ ] What-if revenue calculator module
-- [ ] 90-night cap scenario (labelled scenario, not legal advice; regulation described cautiously)
-- [ ] Power BI guide V2 pages, memo, README, CHANGELOG, tag `v2.0`
+- [x] dbt-duckdb project (staging -> intermediate -> marts) + tests + docs; before/after reconciliation with V1
+- [x] Feature engineering, baseline (district x room-type median) vs LightGBM/sklearn, CV, MAE/MAPE, SHAP, segment error analysis (honest comparison)
+- [x] What-if revenue calculator module
+- [x] 90-night cap scenario (labelled scenario, not legal advice; regulation described cautiously)
+- [x] Power BI guide V2 pages, memo, README, CHANGELOG, tag `v2.0`
 
 ### V3 - AI Pricing Assistant
 - [ ] Streamlit app (Market Explorer, Price Estimator, Scenario Simulator, Ask the data)

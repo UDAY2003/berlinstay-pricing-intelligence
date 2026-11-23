@@ -145,3 +145,57 @@ Theme: one accent colour (e.g. #2a6f97) plus grey; orange only for highlights. T
 - Reconcile the six numbers in section 3. Every page has a population subtitle. Estimates are labelled "estimate". No host names or identifiers anywhere (none exist in the files).
 - Interactions: slicers sync on room type and district; Edit interactions so slicers do not filter the pre-computed `analysis_*` visuals.
 - Export a PDF and 2-3 screenshots into `docs/img/` for the README.
+
+---
+# V2 additions: Pricing gaps and Scenarios (pages 7 and 8)
+
+New files in `powerbi/` (re-run `python -m src.run_v2` to refresh): `fact_price_gap.csv`, `scenario_cap_sensitivity.csv`, `scenario_cap_by_district_base_20pct.csv`.
+
+## Model additions
+| From | To | Cardinality |
+|---|---|---|
+| `dim_listing[listing_id]` | `fact_price_gap[listing_id]` | 1:1 (direction Both, same as `fact_listing`) |
+
+`scenario_cap_*` tables are **disconnected** (pre-computed). Set types: `share_second_homes` as Percentage; `lost_revenue`, `net_lost_revenue` Decimal; `occupancy_scenario` and `displacement` as Text (set `displacement` to Text so it works as a slicer: 0.0 / 0.5).
+
+## Extra DAX measures
+```DAX
+Median Predicted Price =
+CALCULATE ( MEDIAN ( fact_price_gap[pred_price_model] ), dim_listing[is_benchmark] = TRUE () )
+
+Median Gap EUR = MEDIAN ( fact_price_gap[gap_eur] )
+
+Median Gap % = MEDIAN ( fact_price_gap[gap_pct] )
+
+Share Priced Above Model % =
+DIVIDE ( CALCULATE ( COUNTROWS ( fact_price_gap ), fact_price_gap[pricing_position] = "above model (>20% over)" ),
+         COUNTROWS ( fact_price_gap ) )
+
+Share Priced Below Model % =
+DIVIDE ( CALCULATE ( COUNTROWS ( fact_price_gap ), fact_price_gap[pricing_position] = "below model (>20% under)" ),
+         COUNTROWS ( fact_price_gap ) )
+
+Model MAE EUR = AVERAGEX ( fact_price_gap, ABS ( fact_price_gap[gap_eur] ) )
+
+Baseline MAE EUR = AVERAGEX ( fact_price_gap, ABS ( fact_price_gap[price_eur] - fact_price_gap[pred_price_baseline] ) )
+
+Scenario Lost Revenue EUR m =
+DIVIDE ( SUM ( scenario_cap_sensitivity[net_lost_revenue] ), 1000000 )
+```
+Reconciliation: `Share Priced Above Model %` = **27.8%**, `Below` = **27.7%**, in line = **44.5%**; `Model MAE EUR` should be close to **54-56** (out-of-fold over all 6,456 listings) and `Baseline MAE EUR` clearly higher.
+
+## Page 7 - Pricing gaps (model vs asking price)
+- Cards: `Median Gap %`, `Share Priced Above Model %`, `Share Priced Below Model %`, `Model MAE EUR`, `Baseline MAE EUR`.
+- Scatter: x = `fact_price_gap[pred_price_model]`, y = `fact_price_gap[price_eur]`, detail = `listing_id`, add a constant/diagonal reference line (Analytics pane: y = x via an X=Y line, or a second series). Colour by `pricing_position`. Cap axes at 600 EUR.
+- Clustered bar: `dim_neighbourhood[district]` x `Median Gap %`.
+- Column: `dim_listing[capacity_band]` x `Share Priced Above Model %` and `Share Priced Below Model %`.
+- Slicers: `room_type`, `district`, `pricing_position`.
+- Mandatory note on the page: "Gap = asking price minus what the model predicts for comparable listings (predictions are out-of-fold, the model never saw the listing's host). A gap is not an error: the model does not see photos, quality or exact micro-location. Use it to shortlist listings to review, not to conclude a price is wrong."
+
+## Page 8 - Scenarios (90-night cap, labelled SCENARIO)
+- Banner (text box, top): "Scenario, not legal advice and not a forecast. Which listings are second homes is unknown; the share is an assumption. Verify rules on official Berlin sources."
+- Slicers on `scenario_cap_sensitivity`: `occupancy_scenario` (low/base/high), `displacement` (0.0 / 0.5).
+- Line chart: x = `share_second_homes`, y = `pct_of_market_revenue` (Sum), legend = `occupancy_scenario`.
+- Card: `Scenario Lost Revenue EUR m` (slice at share = 20%, base, displacement 0.0 expected ~4.3).
+- Table: `scenario_cap_by_district_base_20pct` columns `district`, `pool_listings`, `pool_over_cap_pct`, `lost_revenue` (format as EUR m).
+- Footnote: assumptions from `docs/REGULATION_SCENARIO.md`.
