@@ -1,0 +1,26 @@
+name: berlinstay
+version: "2.0.0"
+config-version: 2
+profile: berlinstay
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  berlinstay:
+    staging:      {+materialized: view,  +schema: dbt_stg}
+    intermediate: {+materialized: table, +schema: dbt_int}
+    marts:        {+materialized: table, +schema: dbt_mart}
+    analysis:     {+materialized: table, +schema: dbt_analysis}
+
+seeds:
+  berlinstay:
+    +schema: dbt_seed
+    event_window:
+      +column_types: {start_date: date, end_date: date, is_indicative: boolean}
+    occupancy_assumptions:
+      +column_types: {review_rate: double, avg_stay_nights: double, max_nights: integer}

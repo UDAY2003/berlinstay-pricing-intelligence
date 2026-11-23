@@ -1,0 +1,11 @@
+version: 2
+sources:
+  - name: raw
+    description: Untouched Inside Airbnb Berlin files (scrape 2026-09-19), loaded by src/load_data.py. CC BY 4.0.
+    schema: raw
+    tables:
+      - name: listings
+        columns: [{name: id, tests: [unique, not_null]}]
+      - name: calendar
+      - name: reviews
+      - name: neighbourhoods

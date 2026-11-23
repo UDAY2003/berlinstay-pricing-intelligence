@@ -1,0 +1,72 @@
+version: 2
+models:
+  - name: dim_neighbourhood
+    description: "Grain: one row per Ortsteil (139). district = Bezirk."
+    columns:
+      - {name: neighbourhood_key, tests: [unique, not_null]}
+  - name: dim_host_type
+    description: "Grain: one row per host-size bucket, derived from calculated_host_listings_count."
+    columns:
+      - {name: host_type_key, tests: [unique, not_null]}
+      - name: host_type
+        tests:
+          - accepted_values:
+              arguments: {values: [Single-listing host, Small multi (2-3), Professional (4-10), Commercial (11+)]}
+  - name: dim_date
+    description: "Grain: one row per day 2009-2027. Events are flagged; event_is_indicative = approximate dates, verify."
+    columns:
+      - {name: date_key, tests: [unique, not_null]}
+  - name: dim_listing
+    description: "Grain: one row per listing. Descriptive attributes and flags. host_key is a hash and must never be exported."
+    columns:
+      - {name: listing_id, tests: [unique, not_null]}
+      - name: neighbourhood_key
+        tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_neighbourhood'), field: neighbourhood_key}}
+      - name: host_type_key
+        tests:
+          - not_null
+          - relationships: {arguments: {to: ref('dim_host_type'), field: host_type_key}}
+      - name: listing_segment
+        tests:
+          - accepted_values:
+              arguments: {values: [Short-stay, Mid-term (28+ nights), No price (inactive/unbookable)]}
+  - name: fact_listing
+    description: "Grain: one row per listing (snapshot 2026-09-19). est_* columns are ESTIMATES: nights = LEAST(255, ROUND(reviews_ltm / review_rate * GREATEST(min_nights_avg, avg_stay))); revenue = nights x price (gross)."
+    columns:
+      - name: listing_id
+        tests:
+          - unique
+          - not_null
+          - relationships: {arguments: {to: ref('dim_listing'), field: listing_id}}
+      - name: neighbourhood_key
+        tests:
+          - relationships: {arguments: {to: ref('dim_neighbourhood'), field: neighbourhood_key}}
+      - name: host_type_key
+        tests:
+          - relationships: {arguments: {to: ref('dim_host_type'), field: host_type_key}}
+  - name: fact_listing_day
+    description: "Grain: listing x future day. Unavailable = booked OR host-blocked."
+    columns:
+      - name: listing_id
+        tests:
+          - relationships: {arguments: {to: ref('dim_listing'), field: listing_id}}
+      - name: date_key
+        tests:
+          - relationships: {arguments: {to: ref('dim_date'), field: date_key}}
+    data_tests:
+      - dbt_utils_free_unique_grain:
+          arguments: {}
+  - name: fact_review_month
+    description: "Grain: listing x month with >= 1 review."
+    columns:
+      - name: listing_id
+        tests:
+          - relationships: {arguments: {to: ref('dim_listing'), field: listing_id}}
+  - name: fact_availability_week
+    description: "Grain: week x neighbourhood x room type (benchmark listings)."
+    columns:
+      - name: neighbourhood_key
+        tests:
+          - relationships: {arguments: {to: ref('dim_neighbourhood'), field: neighbourhood_key}}

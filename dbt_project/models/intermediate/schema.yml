@@ -1,0 +1,14 @@
+version: 2
+models:
+  - name: int_listings_flagged
+    description: "Adds business flags. is_benchmark = priced, short-stay (<28 nights), price 10-1000 EUR."
+    columns:
+      - name: listing_id
+        tests: [unique, not_null]
+      - name: is_benchmark
+        tests: [not_null]
+  - name: int_listing_estimates
+    description: "Estimated nights per year under low/base/high assumptions (seed occupancy_assumptions). ESTIMATES, not measurements."
+    columns:
+      - name: listing_id
+        tests: [unique, not_null]

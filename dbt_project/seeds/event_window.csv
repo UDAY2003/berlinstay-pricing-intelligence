@@ -1,0 +1,8 @@
+event_name,start_date,end_date,is_indicative
+Berlin Marathon,2026-09-26,2026-09-27,true
+Festival of Lights,2026-10-09,2026-10-18,true
+Christmas / New Year,2026-12-20,2027-01-02,false
+Berlinale (film fest),2027-02-11,2027-02-21,true
+ITB (travel fair),2027-03-02,2027-03-04,true
+Easter,2027-03-26,2027-04-05,false
+Pride / CSD,2027-07-17,2027-07-25,true

@@ -1,0 +1,4 @@
+scenario,review_rate,avg_stay_nights,max_nights
+low,0.60,4.0,255
+base,0.50,6.3,255
+high,0.40,6.3,255

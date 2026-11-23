@@ -1,0 +1,33 @@
+version: 2
+models:
+  - name: stg_listings
+    description: "Typed and renamed listings, one row per source listing. Sensitive text fields are not selected; licence text is reduced to a category; host id is hashed."
+    columns:
+      - name: listing_id
+        description: Inside Airbnb listing id (natural key).
+        tests: [unique, not_null]
+      - name: license_status
+        description: Category derived from the free-text licence field. Descriptive only, not a compliance check.
+        tests:
+          - accepted_values:
+              arguments:
+                values: [registration_number, exempt, legal_entity_stated, person_stated, other_format, missing]
+      - name: room_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: [Entire home/apt, Private room, Shared room, Hotel room]
+  - name: stg_reviews
+    description: "One row per review. De-duplicated on review_id because 3,676 ids appear under 2+ listings in the source."
+    columns:
+      - name: review_id
+        tests: [unique, not_null]
+      - name: listing_id
+        tests:
+          - relationships:
+              arguments: {to: ref('stg_listings'), field: listing_id}
+  - name: stg_calendar
+    description: Forward-looking daily availability (365 days). No price column in this release; unavailable means booked OR blocked.
+    columns:
+      - name: is_available
+        tests: [not_null]

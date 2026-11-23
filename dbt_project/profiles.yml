@@ -1,0 +1,9 @@
+# Same DuckDB file as V1; dbt writes only to its own schemas (dbt_stg, dbt_int, dbt_mart, dbt_analysis, dbt_seed),
+# so V1 tables (raw, stg, mart, analysis) stay untouched and can be compared against.
+berlinstay:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/berlinstay.duckdb
+      threads: 4
