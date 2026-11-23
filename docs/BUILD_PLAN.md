@@ -28,17 +28,17 @@ what income is realistic, and how do seasonality and local rules change that?*
 
 ### V1 - Market Analytics
 - [x] Repo inspection, this plan
-- [ ] Scaffold (git, .gitignore, requirements, layout)
-- [ ] `src/load_data.py`: raw files -> DuckDB `raw` schema
-- [ ] `src/dq_report.py`: data-quality report (row counts, nulls, duplicates, price parsing, outliers) -> `docs/DATA_QUALITY_REPORT.md`
-- [ ] SQL staging + star schema (`sql/01..03`): dim_listing, dim_neighbourhood, dim_date, dim_host_type, fact_listing, fact_listing_day, fact_review_month. Grain + keys in `docs/DATA_MODEL.md`
-- [ ] SQL analysis pack (`sql/10..17`): price, supply concentration, multi-listing hosts, occupancy/revenue, seasonality, demand trends
-- [ ] `src/run_pipeline.py`: one command runs load -> DQ -> model -> analysis -> exports
-- [ ] EDA notebook (`notebooks/01_eda.ipynb`), executed with real outputs
-- [ ] Exports to `data/exports/` and `powerbi/`
-- [ ] `docs/POWERBI_GUIDE.md`
-- [ ] `docs/MEMO_V1.md` (2-page business memo)
-- [ ] Tests (`tests/`), README, CHANGELOG, LEARNING_NOTES, tag `v1.0`
+- [x] Scaffold (git, .gitignore, requirements, layout)
+- [x] `src/load_data.py`: raw files -> DuckDB `raw` schema
+- [x] `src/dq_report.py`: data-quality report (row counts, nulls, duplicates, price parsing, outliers) -> `docs/DATA_QUALITY_REPORT.md`
+- [x] SQL staging + star schema (`sql/01..03`): dim_listing, dim_neighbourhood, dim_date, dim_host_type, fact_listing, fact_listing_day, fact_review_month. Grain + keys in `docs/DATA_MODEL.md`
+- [x] SQL analysis pack (`sql/10..17`): price, supply concentration, multi-listing hosts, occupancy/revenue, seasonality, demand trends
+- [x] `src/run_pipeline.py`: one command runs load -> DQ -> model -> analysis -> exports
+- [x] EDA notebook (`notebooks/01_eda.ipynb`), executed with real outputs
+- [x] Exports to `data/exports/` and `powerbi/`
+- [x] `docs/POWERBI_GUIDE.md`
+- [x] `docs/MEMO_V1.md` (2-page business memo)
+- [x] Tests (`tests/`), README, CHANGELOG, LEARNING_NOTES, tag `v1.0`
 
 ### V2 - Pricing and Scenarios
 - [ ] dbt-duckdb project (staging -> intermediate -> marts) + tests + docs; before/after reconciliation with V1
