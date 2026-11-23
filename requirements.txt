@@ -1,0 +1,12 @@
+# V1 dependencies (pinned to the versions verified in this repo; Python 3.13.5)
+duckdb==2.0.1
+pandas==3.1.1
+numpy==2.5.5
+pyarrow==26.0.1
+matplotlib==3.11.2
+plotly==7.1.0
+nbformat==5.11.1
+nbconvert==7.17.2
+ipykernel==7.4.0
+jupyter_client==8.10.0
+pytest==9.2.0

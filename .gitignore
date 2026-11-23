@@ -1,0 +1,23 @@
+# data and databases (never commit raw data)
+data/
+*.duckdb
+*.duckdb.wal
+*.parquet.tmp
+
+# environments and secrets
+venv/
+.venv/
+.env
+.streamlit/secrets.toml
+*.key
+
+# python / jupyter noise
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
