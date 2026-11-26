@@ -122,9 +122,11 @@ def test_extract_sql():
 def test_provider_config_from_env_and_no_key_leak():
     assert get_provider(env={}) is None and get_provider(env={"LLM_PROVIDER": "none"}) is None
     assert get_provider(env={"LLM_PROVIDER": "anthropic"}) is None              # no key -> demo mode
+    with pytest.raises(ProviderError, match="LLM_MODEL"):                       # a key without a model id is a configuration error
+        get_provider(env={"LLM_PROVIDER": "anthropic", "LLM_API_KEY": "k"})
     p = get_provider(env={"LLM_PROVIDER": "openai", "LLM_API_KEY": "sk-secret-123", "LLM_MODEL": "m", "LLM_BASE_URL": "http://x/v1"})
     assert p.name == "openai" and p.model == "m" and "sk-secret-123" not in repr(p)
-    s = get_provider(secrets={"LLM_PROVIDER": "anthropic", "LLM_API_KEY": "k"}, env={})
+    s = get_provider(secrets={"LLM_PROVIDER": "anthropic", "LLM_API_KEY": "k", "LLM_MODEL": "m"}, env={})
     assert s.name == "anthropic"
     with pytest.raises(ProviderError):
         get_provider(env={"LLM_PROVIDER": "nope", "LLM_API_KEY": "k"})

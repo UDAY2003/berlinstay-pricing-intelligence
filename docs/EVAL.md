@@ -9,7 +9,7 @@
 ## How to run it (about 5 minutes, cents of API cost)
 1. Add a few dollars of credit on the account of your provider (OpenAI: platform.openai.com billing; Anthropic: console.anthropic.com Settings > Billing). A full run sends about 50k input tokens (about 1.2k per question x 42) plus short outputs.
 2. Set the provider in PowerShell (key via the hidden prompt, never in chat or in a file in the repo):
-   `$env:LLM_PROVIDER="openai"` (or `anthropic`), `$env:LLM_MODEL="gpt-4o-mini"` (optional), then `$s = Read-Host "Key" -AsSecureString; $env:LLM_API_KEY = [Net.NetworkCredential]::new("",$s).Password`
+   `$env:LLM_PROVIDER="openai"` (or `anthropic`), `$env:LLM_MODEL="<model id from your provider>"` (required), then `$s = Read-Host "Key" -AsSecureString; $env:LLM_API_KEY = [Net.NetworkCredential]::new("",$s).Password`
 3. `.\venv\Scripts\python.exe -m eval.run_eval --provider env --preflight` (one tiny call; prints a clear message for 401 = wrong key, 429 insufficient_quota = no credit, 404 = unknown model)
 4. `.\venv\Scripts\python.exe -m eval.run_eval --provider env` writes `docs/EVAL_REPORT.md` and `eval/results_<model>.json`. If every call fails at the provider, no report is written (so a billing problem can never look like 0% accuracy).
 5. Read each failure, write its diagnosis in `docs/EVAL_REPORT.md`, fix `src/text2sql/schema.py` if the cause is the prompt, re-run, and copy the final accuracy into `docs/CASE_STUDY.md`, `docs/CV_BULLETS.md` and the README status table.

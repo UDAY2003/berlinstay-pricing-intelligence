@@ -80,7 +80,7 @@ def main():
 
     provider = get_provider()
     if provider is None:
-        raise SystemExit("No LLM configured. Set LLM_PROVIDER (anthropic|openai), LLM_API_KEY and optionally LLM_MODEL, then rerun.")
+        raise SystemExit("No LLM configured. Set LLM_PROVIDER (anthropic|openai), LLM_API_KEY and LLM_MODEL, then rerun.")
     if not preflight(provider):
         raise SystemExit(1)
     if args.preflight:

@@ -28,7 +28,7 @@ In **Settings > Secrets** paste (see `app/.streamlit/secrets.toml.example`):
 ```toml
 LLM_PROVIDER = "anthropic"        # or "openai" (any OpenAI-compatible endpoint) or "none"
 LLM_API_KEY  = "your-key"
-# LLM_MODEL = "claude-sonnet-5-5"
+LLM_MODEL = "your-model-id"            # required when a provider is set
 # LLM_BASE_URL = ""
 # LLM_MAX_QUESTIONS_PER_SESSION = 15
 ```

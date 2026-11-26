@@ -2,7 +2,7 @@
 
   LLM_PROVIDER  anthropic | openai | none          (openai = any OpenAI-compatible /chat/completions endpoint)
   LLM_API_KEY   the key (also accepted: ANTHROPIC_API_KEY / OPENAI_API_KEY)
-  LLM_MODEL     model id (defaults: anthropic claude-sonnet-5-5, openai gpt-4o-mini)
+  LLM_MODEL     model id of your provider (required; no default is built in)
   LLM_BASE_URL  optional endpoint override (default: provider's public API)
   LLM_TIMEOUT   seconds (default 30)
 The key is read at runtime and never logged, printed or stored.
@@ -65,6 +65,13 @@ class OpenAICompatProvider(_Base):
             raise ProviderError("Unexpected response format from provider.")
 
 
+def _model(get) -> str:
+    m = get("LLM_MODEL")
+    if not m:
+        raise ProviderError("LLM_MODEL is not set. Set it to the model id offered by your provider.")
+    return m
+
+
 def get_provider(secrets=None, env=None):
     """Return a provider or None (= demo mode). `secrets` may be Streamlit's st.secrets (mapping) or None."""
     env = os.environ if env is None else env
@@ -75,8 +82,8 @@ def get_provider(secrets=None, env=None):
     timeout = float(get("LLM_TIMEOUT", 30))
     if kind == "anthropic":
         key = get("LLM_API_KEY") or get("ANTHROPIC_API_KEY")
-        return AnthropicProvider(key, get("LLM_MODEL", "claude-sonnet-5-5"), get("LLM_BASE_URL", "https://api.anthropic.com"), timeout) if key else None
+        return AnthropicProvider(key, _model(get), get("LLM_BASE_URL", "https://api.anthropic.com"), timeout) if key else None
     if kind == "openai":
         key = get("LLM_API_KEY") or get("OPENAI_API_KEY")
-        return OpenAICompatProvider(key, get("LLM_MODEL", "gpt-4o-mini"), get("LLM_BASE_URL", "https://api.openai.com/v1"), timeout) if key else None
+        return OpenAICompatProvider(key, _model(get), get("LLM_BASE_URL", "https://api.openai.com/v1"), timeout) if key else None
     raise ProviderError(f"Unknown LLM_PROVIDER '{kind}' (use anthropic, openai or none).")
