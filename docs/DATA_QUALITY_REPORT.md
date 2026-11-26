@@ -1,6 +1,6 @@
 # Data Quality Report
 
-Scrape: Inside Airbnb Berlin, 2026-09-19. Generated 2026-11-23 by `src/dq_report.py` from the DuckDB `raw` schema. Re-run `python -m src.run_pipeline` to refresh.
+Scrape: Inside Airbnb Berlin, 2026-09-19. Generated 2026-11-26 by `src/dq_report.py` from the DuckDB `raw` schema. Re-run `python -m src.run_pipeline` to refresh.
 
 ## 1. Row counts
 

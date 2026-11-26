@@ -35,10 +35,10 @@ def main():
             excl = " , price_raw, ia_est_occupancy_nights, ia_est_revenue" if name == "fact_listing" else ""
             where = " WHERE f.month_start >= DATE '2015-01-01'" if name == "fact_review_month" else ""
             sql = f"SELECT m.new_id AS listing_id, f.* EXCLUDE (listing_id{excl}) FROM {src} f JOIN idmap m ON m.listing_id = f.listing_id{where}"
-        con.execute(f"COPY ({sql}) TO '{(OUT / (name + '.parquet')).as_posix()}' (FORMAT parquet, COMPRESSION zstd)")
+        con.execute(f"COPY (SELECT * FROM ({sql}) ORDER BY ALL) TO '{(OUT / (name + '.parquet')).as_posix()}' (FORMAT parquet, COMPRESSION zstd)")
     gap = ("SELECT m.new_id AS listing_id, g.* EXCLUDE (listing_id) FROM read_csv('" + (ROOT / "powerbi" / "fact_price_gap.csv").as_posix() +
            "') g JOIN idmap m ON m.listing_id = g.listing_id")
-    con.execute(f"COPY ({gap}) TO '{(OUT / 'fact_price_gap.parquet').as_posix()}' (FORMAT parquet, COMPRESSION zstd)")
+    con.execute(f"COPY (SELECT * FROM ({gap}) ORDER BY ALL) TO '{(OUT / 'fact_price_gap.parquet').as_posix()}' (FORMAT parquet, COMPRESSION zstd)")
     shutil.copy(GEOJSON, OUT / "neighbourhoods.geojson")
     shutil.copy(ROOT / "models" / "price_model.joblib", ROOT / "app" / "model" / "price_model.joblib")
     total = 0

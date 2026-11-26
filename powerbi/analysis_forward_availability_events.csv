@@ -1,8 +1,8 @@
 ﻿event_name,start_date,end_date,window_is_indicative,event_unavailable_pct,other_days_same_months_pct,uplift_pp
 Berlin Marathon,2026-09-26,2026-09-27,False,82.8,77.8,5.0
-Festival of Lights,2026-10-09,2026-10-18,False,53.6,45.4,8.2
-Christmas / New Year,2026-12-20,2027-01-02,False,36.9,29.0,7.9
 Berlinale (film fest),2027-02-10,2027-02-21,False,30.7,30.2,0.5
-ITB (travel fair),2027-03-16,2027-03-18,False,33.0,33.1,-0.1
+Christmas / New Year,2026-12-20,2027-01-02,False,36.9,29.0,7.9
 Easter,2027-03-26,2027-03-29,False,38.3,33.1,5.2
+Festival of Lights,2026-10-09,2026-10-18,False,53.6,45.4,8.2
+ITB (travel fair),2027-03-16,2027-03-18,False,33.0,33.1,-0.1
 Pride / CSD,2027-07-24,2027-07-24,False,47.0,48.5,-1.5

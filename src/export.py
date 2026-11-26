@@ -27,14 +27,14 @@ def export(db_path=DB_PATH) -> dict:
     con = duckdb.connect(str(db_path), read_only=True)
     counts = {}
     for name, sql in MART_TABLES.items():
-        df = con.execute(sql).df()
+        df = con.execute(f"SELECT * FROM ({sql}) ORDER BY ALL").df()      # deterministic row order: rebuilds give identical files
         df.to_csv(EXPORT_DIR / f"{name}.csv", index=False, encoding="utf-8")
         df.to_parquet(EXPORT_DIR / f"{name}.parquet", index=False)
         df.to_csv(POWERBI_DIR / f"{name}.csv", index=False, encoding="utf-8-sig")
         counts[name] = len(df)
     analysis = [r[0] for r in con.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='analysis'").fetchall()]
     for name in analysis:
-        df = con.execute(f"SELECT * FROM analysis.{name}").df()
+        df = con.execute(f"SELECT * FROM analysis.{name} ORDER BY ALL").df()
         df.to_csv(EXPORT_DIR / "analysis" / f"{name}.csv", index=False, encoding="utf-8")
         if name in POWERBI_ANALYSIS:
             df.to_csv(POWERBI_DIR / f"analysis_{name}.csv", index=False, encoding="utf-8-sig")
