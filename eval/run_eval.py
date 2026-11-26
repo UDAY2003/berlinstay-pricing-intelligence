@@ -3,6 +3,7 @@
   python -m eval.run_eval --validate-gold            # no LLM: gold SQL must pass the safety layer and return rows
   python -m eval.run_eval --provider env             # uses LLM_PROVIDER / LLM_API_KEY / LLM_MODEL from the environment
   python -m eval.run_eval --provider env --limit 10  # quick run
+  python -m eval.run_eval --provider env --preflight # one tiny call: checks key, model and credit
 
 Scoring = EXECUTION ACCURACY: the result of the generated SQL must match the result of the gold SQL
 (values compared, column names ignored, floats rounded, extra columns tolerated, row order checked only when the question asks for an order).
@@ -16,7 +17,7 @@ from collections import defaultdict
 import pandas as pd
 from src.config import ROOT
 from src.text2sql.engine import ask
-from src.text2sql.llm import get_provider
+from src.text2sql.llm import get_provider, ProviderError
 from src.text2sql.safety import make_connection, execute_safe
 from src.text2sql.schema import ALLOWED_TABLES
 
@@ -57,6 +58,7 @@ def main():
     ap.add_argument("--provider", default=None, help="'env' to use environment configuration")
     ap.add_argument("--validate-gold", action="store_true")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--preflight", action="store_true", help="only check that the provider answers one tiny request")
     args = ap.parse_args()
     qs = load_questions()[: args.limit]
     con = make_connection(ROOT / "app" / "data")
@@ -79,7 +81,27 @@ def main():
     provider = get_provider()
     if provider is None:
         raise SystemExit("No LLM configured. Set LLM_PROVIDER (anthropic|openai), LLM_API_KEY and optionally LLM_MODEL, then rerun.")
-    rows, t0 = [], time.time()
+    if not preflight(provider):
+        raise SystemExit(1)
+    if args.preflight:
+        return
+    rows, t0 = score_questions(provider, con, qs), time.time()
+    res = pd.DataFrame(rows)
+    if (res.stage == "llm").all():      # every call failed at the provider: not an accuracy result, do not write a report
+        raise SystemExit(f"All {len(res)} calls failed at the provider ({res.error.iloc[0]}). No report written.")
+    acc = res.ok.mean()
+    by_cat = res.groupby("category").ok.agg(["mean", "size"])
+    out = {"model": provider.model, "provider": provider.name, "n": len(res), "accuracy": float(acc), "seconds": round(time.time() - t0),
+           "by_category": {k: {"accuracy": float(v["mean"]), "n": int(v["size"])} for k, v in by_cat.iterrows()}, "rows": rows}
+    safe = provider.model.replace("/", "_").replace(":", "_")
+    (ROOT / "eval" / f"results_{safe}.json").write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_report(out, res)
+    print(f"\nexecution accuracy {acc:.1%} ({int(res.ok.sum())}/{len(res)})")
+
+
+def score_questions(provider, con, qs, verbose=True) -> list:
+    """Ask every question through the full engine (LLM -> safety layer -> execution) and score it. Returns one dict per question."""
+    rows = []
     for q in qs:
         ans = ask(q["question"], provider, con)
         if q["expect"] == "refuse":
@@ -89,16 +111,20 @@ def main():
             ok = ans.stage == "ok" and results_match(gold, ans.df, q["ordered"])
         rows.append(dict(id=q["id"], category=q["category"], question=q["question"], ok=bool(ok), stage=ans.stage, repaired=len(ans.attempts) > 1,
                          generated_sql=ans.sql, error=ans.error, gold_sql=q["gold_sql"]))
-        print(f"{'PASS' if ok else 'FAIL'} {q['id']} [{q['category']}] {q['question'][:70]}")
-    res = pd.DataFrame(rows)
-    acc = res.ok.mean()
-    by_cat = res.groupby("category").ok.agg(["mean", "size"])
-    out = {"model": provider.model, "provider": provider.name, "n": len(res), "accuracy": float(acc), "seconds": round(time.time() - t0),
-           "by_category": {k: {"accuracy": float(v["mean"]), "n": int(v["size"])} for k, v in by_cat.iterrows()}, "rows": rows}
-    safe = provider.model.replace("/", "_").replace(":", "_")
-    (ROOT / "eval" / f"results_{safe}.json").write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
-    write_report(out, res)
-    print(f"\nexecution accuracy {acc:.1%} ({int(res.ok.sum())}/{len(res)})")
+        if verbose:
+            print(f"{'PASS' if ok else 'FAIL'} {q['id']} [{q['category']}] {q['question'][:70]}")
+    return rows
+
+
+def preflight(provider) -> bool:
+    """One tiny call before the real run, so a billing/auth problem is reported once, clearly, instead of 42 times."""
+    try:
+        provider.complete("Reply with the single word OK.", "ping", 5)
+        print(f"preflight OK: {provider.name}:{provider.model} answered. (a full run sends about 50k input tokens in total, i.e. cents)")
+        return True
+    except ProviderError as e:
+        print(f"preflight FAILED: {e}\n  401 = wrong key/provider | 429 insufficient_quota = no credit on the account | 404/400 = model name not available")
+        return False
 
 
 def write_report(o, res):

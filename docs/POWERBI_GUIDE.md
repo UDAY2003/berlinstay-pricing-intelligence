@@ -5,6 +5,8 @@ Data credit (put it on the last page footer): **Data: Inside Airbnb (insideairbn
 All occupancy/revenue numbers are **estimates**; say so on the relevant visuals.
 
 ## 1. Load the data
+> **Berlin/German locale warning (most likely source of wrong numbers):** the CSVs use a **dot** as the decimal separator and ISO dates (`2026-09-19`). Power BI reads CSV text with your computer's regional settings, and on a German locale a value such as `150.16` can be read as 15016 or fail. Avoid this once, before loading anything: **File > Options and settings > Options > Current File > Regional Settings > Locale for import = English (United States)**. If you change column types in Power Query later, use *Change Type > Using Locale... > English (United States)* for decimals and dates. Check after loading: `price_eur` must show values like 97 or 150.16, never 15016.
+
 Home > Get data > Text/CSV, for each file (File origin: **65001 UTF-8**): `dim_listing`, `dim_neighbourhood`, `dim_host_type`, `dim_date`, `fact_listing`, `fact_review_month`, `fact_availability_week`, `analysis_seasonal_index`, `analysis_monthly_review_series`, `analysis_forward_availability_weekly`, `analysis_forward_availability_events`, `analysis_review_demand_trends`, `analysis_neighbourhood_summary`.
 In Power Query set types: all `*_key` and `listing_id` = Whole number; `date`, `month_start`, `week_start`, `first_day_in_data`, `start_date`, `end_date` = Date; `is_*`, `has_*` columns = True/False; prices/revenues = Decimal number.
 Rename tables exactly as the files (without `analysis_` prefix is fine, just stay consistent with the measures below).
@@ -101,6 +103,8 @@ DIVIDE (
 ```
 `Reviews Prior Year`/`Rolling 12M` need the month axis from `dim_date` (use `dim_date[month_start]` or Year-Month hierarchy). Filter the report to 2015 onward and exclude the partial month Sep 2026 (visual filter: `dim_date[date] < 1 Sep 2026`).
 
+**Full reference:** every measure below, with expected values for two slicer settings, is in `docs/POWERBI_EXPECTED_VALUES.md` (put each measure in a Card, apply the slicers, compare). `Reviews Rolling 12M` is a **sum** of the last 12 months (the SQL series `rolling_12m` is an average).
+
 **Reconciliation check (your DAX must match the SQL, otherwise something is wrong):** `Benchmark Listings` = **6,456**; `All Listings` = **12,376**; `Median Price` (no slicers) = **150.2**; entire-home median = **181**; private-room median = **91**; Mitte entire-home median = **205**.
 
 ## 4. Pages, visuals and slicers
@@ -142,6 +146,9 @@ Theme: one accent colour (e.g. #2a6f97) plus grey; orange only for highlights. T
 **Page 6 - About and data notes**: source and licence, scrape date, definitions, estimate disclaimers, known limits (copy from `docs/DATA_MODEL.md`), link to the repo.
 
 ## 5. Quality checklist
+- Locale for import is English (United States) (see section 1) and `price_eur` shows 97 / 150.16, not 15016.
+- Mark `dim_date` as a Date table and confirm `dim_date` has no gaps (it is a contiguous daily table 2015-2027); `SAMEPERIODLASTYEAR` and `DATESINPERIOD` depend on that.
+- Every measure card matches `docs/POWERBI_EXPECTED_VALUES.md` for scenario A (no slicers) and scenario B (Entire home + Mitte).
 - Reconcile the six numbers in section 3. Every page has a population subtitle. Estimates are labelled "estimate". No host names or identifiers anywhere (none exist in the files).
 - Interactions: slicers sync on room type and district; Edit interactions so slicers do not filter the pre-computed `analysis_*` visuals.
 - Export a PDF and 2-3 screenshots into `docs/img/` for the README.

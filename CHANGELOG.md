@@ -1,5 +1,11 @@
 # Changelog
 
+## Final quality pass (2026-11-26)
+- Evaluation: `--preflight`, no report if every call fails at the provider, `score_questions()` refactor, end-to-end harness test with a perfect and a junk model; cost estimate (about 50k input tokens per run).
+- Power BI: reference values for all 30 DAX measures (`src/powerbi_expected.py`, `docs/POWERBI_EXPECTED_VALUES.md`, `tests/test_powerbi_measures.py`); guide now warns about the German-locale CSV import pitfall (set locale to English (United States)) and adds date-table checks.
+- Ask the data: demo mode shows a validated example immediately; retaken screenshots.
+- CI workflow (runs on a clean environment with app requirements only; dry-run locally: 66 pass, 29 skip), LICENSE (MIT, data stays CC BY 4.0), `.gitattributes`, `scripts/check.sh|ps1`, README rewrite with architecture diagram. 95 tests.
+
 ## Post-v3.0 fixes and verification (2026-11-23)
 - Event windows verified against official sources and corrected: ITB is 16-18 Mar 2027 (was wrongly 2-4 Mar), Berlinale 10-21 Feb 2027, Pride parade 24 Jul 2027, Easter = Good Friday to Easter Monday; Festival of Lights (9-18 Oct 2026) and Marathon (27 Sep 2026) confirmed. Uplift numbers updated (Easter +5.2 pp, ITB -0.1, Pride -1.5); all event rows now `is_indicative = false`.
 - `is_benchmark` NULL bug fixed in the V1 SQL as well (it leaked NULLs into the Power BI exports); V1 and dbt now reconcile 19 of 19.

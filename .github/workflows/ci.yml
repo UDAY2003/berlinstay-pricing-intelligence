@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: app/requirements.txt
+      - name: Install app dependencies (the same minimal set Streamlit Cloud uses) and pytest
+        run: pip install -r app/requirements.txt pytest
+      - name: Tests that run from committed files (text-to-SQL safety, eval harness, Streamlit smoke test, Power BI exports and measures)
+        run: python -m pytest -q tests
+      - name: Gold SQL of the evaluation set is valid
+        run: python -m eval.run_eval --validate-gold

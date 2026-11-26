@@ -143,3 +143,36 @@ def test_eval_set_size_and_gold_sql_safe(con):
     for q in qs:
         if q["expect"] == "result":
             assert len(execute_safe(con, q["gold_sql"], ALLOWED_TABLES)[0]) > 0, q["id"]
+
+
+# ---- evaluation harness end-to-end (verifies the scoring loop BEFORE spending money on a real model) ----
+class Oracle:
+    """Fake 'perfect model': returns the gold SQL for whichever question it is asked (and refuses the refuse-questions)."""
+    name, model = "oracle", "oracle-1"
+
+    def __init__(self, qs):
+        self.by_q = {q["question"]: q for q in qs}
+
+    def complete(self, system, user, max_tokens=700):
+        question = user.split("Question:")[-1].split("\n")[0].strip()
+        q = self.by_q[question]
+        return f"```sql\n{q['gold_sql'] if q['expect'] == 'result' else chr(68)+'ROP TABLE dim_listing'}\n```"
+
+
+class Junk:
+    name, model = "junk", "junk-1"
+
+    def complete(self, system, user, max_tokens=700):
+        return "```sql\nSELECT 42 AS answer\n```"
+
+
+def test_eval_harness_scores_oracle_100_and_junk_low(con):
+    from eval.run_eval import score_questions
+    qs = load_questions()
+    rows = score_questions(Oracle(qs), con, qs, verbose=False)
+    assert all(r["ok"] for r in rows), [r["id"] for r in rows if not r["ok"]]
+    junk = score_questions(Junk(), con, qs, verbose=False)
+    ok = {r["id"]: r["ok"] for r in junk}
+    results_ok = [ok[q["id"]] for q in qs if q["expect"] == "result"]
+    assert sum(results_ok) <= 1                                   # a constant answer must not score on real questions
+    assert sum(ok[q["id"]] for q in qs if q["expect"] == "refuse") < sum(q["expect"] == "refuse" for q in qs)   # answering 42 to attacks is not a refusal
