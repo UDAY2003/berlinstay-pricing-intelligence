@@ -1,0 +1,134 @@
+neighbourhood_key,district,neighbourhood,n_listings,is_reliable_sample,median_price,entire_home_pct,median_est_nights,median_est_revenue,mean_review_score,price_rank
+1,Charlottenburg-Wilm.,Barstraße,21,True,96.5,33.3,202.0,14953.0,4.62,109
+2,Charlottenburg-Wilm.,Charlottenburg Nord,3,False,81.0,33.3,151.0,12080.0,4.92,125
+3,Charlottenburg-Wilm.,Düsseldorfer Straße,110,True,146.1,51.8,240.0,20506.0,4.71,54
+4,Charlottenburg-Wilm.,Forst Grunewald,4,False,157.0,50.0,133.0,10973.0,4.63,31
+5,Charlottenburg-Wilm.,Grunewald,46,True,148.3,82.6,13.0,1885.0,4.84,52
+6,Charlottenburg-Wilm.,Halensee,50,True,184.7,68.0,94.0,15839.0,4.65,9
+7,Charlottenburg-Wilm.,Heerstrasse,23,True,142.5,78.3,214.0,24480.0,4.91,59
+8,Charlottenburg-Wilm.,Kantstraße,51,True,165.0,68.6,164.0,17850.0,4.75,17
+9,Charlottenburg-Wilm.,Kurfürstendamm,96,True,163.2,68.8,120.0,18360.0,4.69,21
+10,Charlottenburg-Wilm.,Mierendorffplatz,19,False,129.5,84.2,139.0,20145.0,4.72,76
+11,Charlottenburg-Wilm.,Neue Kantstraße,78,True,169.2,66.7,152.0,17723.0,4.79,15
+12,Charlottenburg-Wilm.,Otto-Suhr-Allee,114,True,121.2,62.3,126.0,13591.0,4.7,87
+13,Charlottenburg-Wilm.,Schloß Charlottenburg,57,True,127.8,63.2,239.0,19635.0,4.77,79
+14,Charlottenburg-Wilm.,Schmargendorf,2,False,181.6,50.0,191.0,32663.0,4.69,11
+15,Charlottenburg-Wilm.,Volkspark Wilmersdorf,48,True,133.1,56.3,183.0,16573.0,4.62,72
+16,Charlottenburg-Wilm.,Westend,49,True,128.0,53.1,101.0,15667.0,4.84,78
+17,Charlottenburg-Wilm.,Wiesbadener Straße,15,False,189.0,40.0,38.0,4158.0,4.48,6
+18,Friedrichshain-Kreuzberg,Frankfurter Allee Nord,91,True,150.0,72.5,189.0,24225.0,4.77,44
+19,Friedrichshain-Kreuzberg,Frankfurter Allee Süd FK,303,True,162.5,80.9,176.0,23230.0,4.74,23
+20,Friedrichshain-Kreuzberg,Karl-Marx-Allee-Nord,62,True,162.6,80.6,208.0,26852.0,4.7,22
+21,Friedrichshain-Kreuzberg,Karl-Marx-Allee-Süd,139,True,149.5,49.6,164.0,18360.0,4.7,49
+22,Friedrichshain-Kreuzberg,Südliche Friedrichstadt,150,True,156.1,79.3,189.0,24715.0,4.74,35
+23,Friedrichshain-Kreuzberg,Tempelhofer Vorstadt,269,True,155.1,69.5,255.0,28560.0,4.81,36
+24,Friedrichshain-Kreuzberg,nördliche Luisenstadt,89,True,124.0,55.1,255.0,21854.0,4.8,83
+25,Friedrichshain-Kreuzberg,südliche Luisenstadt,141,True,150.0,66.0,202.0,24209.0,4.78,44
+26,Lichtenberg,Alt-Hohenschönhausen Nord,8,False,88.5,37.5,196.0,15443.0,4.75,120
+27,Lichtenberg,Alt-Hohenschönhausen Süd,17,False,86.0,82.4,126.0,10961.0,4.36,121
+28,Lichtenberg,Alt-Lichtenberg,19,False,151.8,63.2,63.0,13515.0,4.78,42
+29,Lichtenberg,Fennpfuhl,3,False,65.0,33.3,255.0,16575.0,4.65,130
+30,Lichtenberg,Frankfurter Allee Süd,3,False,103.0,100.0,255.0,26265.0,4.84,103
+31,Lichtenberg,Friedrichsfelde Nord,24,True,154.8,70.8,210.0,18488.0,4.55,38
+32,Lichtenberg,Friedrichsfelde Süd,5,False,64.0,20.0,151.0,9676.0,4.34,131
+33,Lichtenberg,Karlshorst,35,True,163.7,71.4,139.0,16917.0,4.56,20
+34,Lichtenberg,"Malchow, Wartenberg und Falkenberg",4,False,125.0,75.0,107.0,16646.0,4.83,81
+35,Lichtenberg,Neu Lichtenberg,54,True,123.8,64.8,170.0,19151.0,4.77,84
+37,Lichtenberg,Neu-Hohenschönhausen Süd,1,False,45.0,100.0,255.0,11475.0,4.8,133
+38,Lichtenberg,Rummelsburger Bucht,34,True,150.3,82.4,145.0,17104.0,4.71,43
+39,Marzahn - Hellersdorf,Biesdorf,19,False,116.0,73.7,113.0,15142.0,4.87,92
+43,Marzahn - Hellersdorf,Kaulsdorf,9,False,131.0,55.6,25.0,7150.0,4.87,74
+44,Marzahn - Hellersdorf,Mahlsdorf,17,False,130.0,82.4,76.0,10206.0,4.74,75
+45,Marzahn - Hellersdorf,Marzahn-Mitte,3,False,109.0,0.0,50.0,17876.0,4.64,100
+47,Marzahn - Hellersdorf,Marzahn-Süd,15,False,149.0,73.3,56.0,9307.0,4.76,50
+48,Mitte,Alexanderplatz,547,True,160.0,64.0,252.0,25599.0,4.72,26
+49,Mitte,Brunnenstr. Nord,155,True,187.7,89.0,25.0,6055.0,4.76,8
+50,Mitte,Brunnenstr. Süd,264,True,212.8,83.3,126.0,23213.0,4.82,3
+51,Mitte,Moabit Ost,114,True,144.7,69.3,255.0,29239.0,4.76,57
+52,Mitte,Moabit West,110,True,159.9,68.2,201.0,22530.0,4.72,28
+53,Mitte,Osloer Straße,50,True,111.5,58.0,164.0,16242.0,4.62,98
+54,Mitte,Parkviertel,57,True,112.7,64.9,176.0,17102.0,4.74,97
+55,Mitte,Regierungsviertel,83,True,194.5,71.1,214.0,30600.0,4.68,5
+56,Mitte,Tiergarten Süd,71,True,152.0,66.2,151.0,18573.0,4.64,40
+57,Mitte,Wedding Zentrum,80,True,138.5,77.5,255.0,25881.0,4.72,62
+58,Neukölln,Britz,21,True,160.0,76.2,50.0,7866.0,4.64,26
+59,Neukölln,Buckow,19,False,149.7,78.9,13.0,1248.0,4.47,48
+60,Neukölln,Buckow Nord,3,False,85.0,66.7,126.0,10710.0,4.86,123
+61,Neukölln,Gropiusstadt,1,False,126.7,100.0,63.0,7980.0,5.0,80
+62,Neukölln,Köllnische Heide,22,True,149.0,40.9,126.0,13448.0,4.64,50
+63,Neukölln,Neuköllner Mitte/Zentrum,130,True,137.8,61.5,126.0,14025.0,4.79,63
+64,Neukölln,Reuterstraße,122,True,129.4,59.8,133.0,15216.0,4.79,77
+65,Neukölln,Rixdorf,81,True,123.3,64.2,139.0,17688.0,4.77,85
+66,Neukölln,Rudow,38,True,96.5,28.9,88.0,8035.0,4.73,109
+67,Neukölln,Schillerpromenade,92,True,144.7,70.7,145.0,18460.0,4.82,58
+68,Pankow,Blankenburg/Heinersdorf/Märchenland,15,False,90.5,66.7,164.0,13066.0,4.86,117
+69,Pankow,Blankenfelde/Niederschönhausen,28,True,133.8,75.0,114.0,11095.0,4.87,71
+70,Pankow,Buch,6,False,120.1,83.3,13.0,1253.0,4.75,89
+71,Pankow,Buchholz,12,False,117.8,83.3,158.0,15449.0,4.69,90
+72,Pankow,Helmholtzplatz,111,True,183.7,85.6,255.0,32816.0,4.74,10
+73,Pankow,Karow,6,False,121.1,66.7,107.0,13141.0,4.83,88
+74,Pankow,Pankow Süd,45,True,145.7,68.9,139.0,18360.0,4.8,56
+75,Pankow,Pankow Zentrum,40,True,165.5,70.0,95.0,18108.0,4.78,16
+76,Pankow,Prenzlauer Berg Nord,81,True,162.1,81.5,255.0,36083.0,4.79,24
+77,Pankow,Prenzlauer Berg Nordwest,128,True,156.1,78.1,176.0,23171.0,4.75,34
+78,Pankow,Prenzlauer Berg Ost,57,True,155.0,70.2,113.0,20145.0,4.78,37
+79,Pankow,Prenzlauer Berg Süd,144,True,164.1,72.2,215.0,24609.0,4.76,18
+80,Pankow,Prenzlauer Berg Südwest,209,True,188.0,82.3,252.0,30832.0,4.77,7
+81,Pankow,Schönholz/Wilhelmsruh/Rosenthal,17,False,134.0,76.5,113.0,10480.0,4.88,70
+82,Pankow,Weißensee,72,True,146.2,76.4,138.0,18758.0,4.77,53
+83,Pankow,Weißensee Ost,12,False,207.0,91.7,239.0,29660.0,4.87,4
+84,Reinickendorf,MV 1,3,False,113.0,33.3,38.0,4180.0,4.77,96
+85,Reinickendorf,MV 2,6,False,66.0,16.7,210.0,11669.0,4.66,129
+86,Reinickendorf,Nord 1,10,False,85.0,50.0,177.0,18404.0,4.87,123
+87,Reinickendorf,Nord 2,10,False,104.8,60.0,76.0,11971.0,4.61,102
+88,Reinickendorf,Ost 1,7,False,85.5,71.4,255.0,18870.0,4.83,122
+89,Reinickendorf,Ost 2,21,True,100.5,57.1,255.0,22823.0,4.75,106
+90,Reinickendorf,West 1,5,False,124.5,60.0,255.0,25772.0,4.87,82
+91,Reinickendorf,West 2,16,False,95.0,31.3,32.0,5274.0,4.96,114
+92,Reinickendorf,West 3,3,False,115.0,66.7,56.0,10600.0,4.68,93
+93,Reinickendorf,West 4,9,False,90.1,66.7,113.0,18360.0,4.83,118
+94,Reinickendorf,West 5,2,False,51.3,0.0,95.0,5323.0,4.96,132
+95,Spandau,Brunsbütteler Damm,7,False,109.3,71.4,126.0,10672.0,4.7,99
+96,Spandau,Falkenhagener Feld,8,False,103.0,37.5,126.0,9815.0,4.83,103
+97,Spandau,Gatow / Kladow,13,False,150.0,61.5,151.0,19712.0,4.9,44
+98,Spandau,Hakenfelde,10,False,80.0,40.0,114.0,8535.0,4.72,126
+99,Spandau,Haselhorst,6,False,361.0,100.0,19.0,6859.0,4.83,1
+100,Spandau,Heerstraße Nord,18,False,95.0,50.0,114.0,6830.0,4.75,114
+101,Spandau,Siemensstadt,5,False,135.3,20.0,0.0,0.0,4.79,67
+102,Spandau,Spandau Mitte,14,False,242.2,64.3,89.0,13702.0,4.7,2
+103,Spandau,Wilhelmstadt,21,True,123.0,52.4,25.0,2757.0,4.72,86
+104,Steglitz - Zehlendorf,Albrechtstr.,28,True,161.8,82.1,76.0,17031.0,4.58,25
+105,Steglitz - Zehlendorf,Drakestr.,34,True,141.8,58.8,107.0,13249.0,4.75,61
+106,Steglitz - Zehlendorf,Lankwitz,5,False,70.7,40.0,88.0,11094.0,4.88,127
+107,Steglitz - Zehlendorf,Ostpreußendamm,17,False,90.0,41.2,76.0,9090.0,4.8,119
+108,Steglitz - Zehlendorf,Schloßstr.,19,False,137.5,84.2,202.0,25972.0,4.79,64
+109,Steglitz - Zehlendorf,Teltower Damm,14,False,116.3,78.6,133.0,17728.0,4.65,91
+110,Steglitz - Zehlendorf,Zehlendorf  Nord,34,True,102.5,41.2,189.0,15673.0,4.8,105
+111,Steglitz - Zehlendorf,Zehlendorf  Südwest,20,True,141.8,90.0,78.0,12782.0,4.75,60
+112,Tempelhof - Schöneberg,Friedenau,43,True,156.5,67.4,126.0,14238.0,4.68,32
+113,Tempelhof - Schöneberg,Lichtenrade,12,False,96.1,66.7,86.0,9228.0,4.88,112
+114,Tempelhof - Schöneberg,Mariendorf,24,True,173.2,79.2,48.0,4814.0,4.71,14
+115,Tempelhof - Schöneberg,Marienfelde,11,False,178.6,81.8,0.0,0.0,4.93,12
+116,Tempelhof - Schöneberg,Schöneberg-Nord,151,True,114.6,51.0,227.0,18699.0,4.7,94
+117,Tempelhof - Schöneberg,Schöneberg-Süd,111,True,163.8,73.0,151.0,20045.0,4.8,19
+118,Tempelhof - Schöneberg,Tempelhof,87,True,113.6,72.4,126.0,13344.0,4.62,95
+119,Treptow - Köpenick,Adlershof,12,False,107.2,58.3,138.0,14588.0,4.78,101
+120,Treptow - Köpenick,Allende-Viertel,4,False,66.8,50.0,210.0,14280.0,4.86,128
+121,Treptow - Köpenick,Alt  Treptow,36,True,146.1,75.0,44.0,7167.0,4.88,55
+122,Treptow - Köpenick,Altglienicke,16,False,96.5,68.8,208.0,13468.0,4.81,109
+123,Treptow - Köpenick,Altstadt-Kietz,4,False,135.0,100.0,128.0,14854.0,4.89,68
+124,Treptow - Köpenick,Baumschulenweg,11,False,97.4,72.7,113.0,11006.0,4.77,107
+125,Treptow - Köpenick,Bohnsdorf,22,True,97.3,31.8,32.0,2791.0,4.6,108
+126,Treptow - Köpenick,Dammvorstadt,4,False,149.7,75.0,103.0,18859.0,4.84,47
+127,Treptow - Köpenick,Friedrichshagen,23,True,152.1,47.8,25.0,4750.0,4.84,39
+128,Treptow - Köpenick,Grünau,11,False,158.0,90.9,63.0,9954.0,4.75,29
+129,Treptow - Köpenick,Johannisthal,16,False,95.5,50.0,241.0,19543.0,4.78,113
+130,Treptow - Köpenick,Kölln. Vorstadt/Spindlersf.,3,False,135.0,66.7,227.0,22950.0,4.61,68
+131,Treptow - Köpenick,Köpenick-Nord,10,False,136.0,60.0,120.0,13527.0,4.78,66
+132,Treptow - Köpenick,Köpenick-Süd,8,False,137.5,87.5,88.0,11372.0,4.86,64
+133,Treptow - Köpenick,Müggelheim,15,False,157.5,93.3,38.0,11088.0,4.83,30
+134,Treptow - Köpenick,Niederschöneweide,17,False,152.0,94.1,113.0,23843.0,4.78,40
+135,Treptow - Köpenick,Oberschöneweide,23,True,92.2,100.0,42.0,3156.0,4.71,116
+136,Treptow - Köpenick,Plänterwald,20,True,175.0,90.0,248.0,32814.0,4.82,13
+137,Treptow - Köpenick,Rahnsdorf/Hessenwinkel,34,True,132.6,100.0,76.0,8947.0,4.71,73
+138,Treptow - Köpenick,Schmöckwitz/Karolinenhof/Rauchfangswerder,20,True,156.5,90.0,21.0,4015.0,4.74,32

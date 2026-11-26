@@ -1,0 +1,5 @@
+host_type_key,host_type,hosts,active_listings,share_of_listings_pct,entire_home_pct,median_price,median_est_nights,median_est_revenue,share_of_est_revenue_pct,registration_number_pct
+1,Single-listing host,2516,2516,39.0,69.2,139.3,139.0,18092.0,33.6,76.0
+2,Small multi (2-3),608,1228,19.0,62.0,135.0,214.0,20400.0,19.3,50.2
+3,Professional (4-10),292,1617,25.0,67.7,165.7,176.0,21959.0,28.1,19.4
+4,Commercial (11+),59,1095,17.0,80.5,181.4,151.0,19917.0,19.0,4.9

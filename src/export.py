@@ -6,7 +6,7 @@ Privacy: host_key (hashed host id) is dropped; no names, descriptions, URLs or r
 """
 import shutil
 import duckdb
-from src.config import DB_PATH, EXPORT_DIR, POWERBI_DIR, GEOJSON
+from src.config import DB_PATH, EXPORT_DIR, POWERBI_DIR, GEOJSON, ROOT
 
 MART_TABLES = {                      # table -> SQL used for export
     "dim_neighbourhood": "SELECT * FROM mart.dim_neighbourhood",
@@ -36,6 +36,8 @@ def export(db_path=DB_PATH) -> dict:
     for name in analysis:
         df = con.execute(f"SELECT * FROM analysis.{name} ORDER BY ALL").df()
         df.to_csv(EXPORT_DIR / "analysis" / f"{name}.csv", index=False, encoding="utf-8")
+        (ROOT / "reports" / "analysis_tables").mkdir(parents=True, exist_ok=True)
+        df.to_csv(ROOT / "reports" / "analysis_tables" / f"{name}.csv", index=False, encoding="utf-8")   # committed copy of every SQL answer
         if name in POWERBI_ANALYSIS:
             df.to_csv(POWERBI_DIR / f"analysis_{name}.csv", index=False, encoding="utf-8-sig")
         counts[f"analysis.{name}"] = len(df)

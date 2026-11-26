@@ -17,6 +17,7 @@ def main():
     py = sys.executable
     sh([py, "-m", "src.run_pipeline"])
     sh([py, "-m", "dbt.cli.main", "build", "--profiles-dir", "."], cwd=ROOT / "dbt_project")
+    sh([py, "-m", "src.dbt_lineage"])
     sh([py, "-m", "src.reconcile_v1_dbt"])
     sh([py, "-m", "src.price_model"])
     sh([py, "-m", "src.scenario_cap"])

@@ -1,0 +1,37 @@
+district,year_ytd_aug,reviews,reviews_prev,yoy_pct,growth_rank
+Charlottenburg-Wilm.,2024,6757,4559,48.2,2
+Charlottenburg-Wilm.,2025,8336,6757,23.4,2
+Charlottenburg-Wilm.,2026,10444,8336,25.3,2
+Friedrichshain-Kreuzberg,2024,17319,13395,29.3,4
+Friedrichshain-Kreuzberg,2025,19929,17319,15.1,5
+Friedrichshain-Kreuzberg,2026,22183,19929,11.3,9
+Lichtenberg,2024,2312,1819,27.1,5
+Lichtenberg,2025,2477,2312,7.1,9
+Lichtenberg,2026,2614,2477,5.5,10
+Marzahn - Hellersdorf,2024,549,495,10.9,12
+Marzahn - Hellersdorf,2025,593,549,8.0,8
+Marzahn - Hellersdorf,2026,536,593,-9.6,12
+Mitte,2024,17009,13411,26.8,6
+Mitte,2025,21208,17009,24.7,1
+Mitte,2026,25456,21208,20.0,3
+Neukölln,2024,4869,4263,14.2,10
+Neukölln,2025,5405,4869,11.0,6
+Neukölln,2026,6026,5405,11.5,8
+Pankow,2024,11153,9452,18.0,9
+Pankow,2025,13422,11153,20.3,3
+Pankow,2026,15097,13422,12.5,7
+Reinickendorf,2024,1046,916,14.2,11
+Reinickendorf,2025,1137,1046,8.7,7
+Reinickendorf,2026,1136,1137,-0.1,11
+Spandau,2024,480,293,63.8,1
+Spandau,2025,462,480,-3.7,12
+Spandau,2026,707,462,53.0,1
+Steglitz - Zehlendorf,2024,1269,1011,25.5,7
+Steglitz - Zehlendorf,2025,1525,1269,20.2,4
+Steglitz - Zehlendorf,2026,1814,1525,19.0,4
+Tempelhof - Schöneberg,2024,4986,3528,41.3,3
+Tempelhof - Schöneberg,2025,5262,4986,5.5,10
+Tempelhof - Schöneberg,2026,5976,5262,13.6,6
+Treptow - Köpenick,2024,2413,1957,23.3,8
+Treptow - Köpenick,2025,2468,2413,2.3,11
+Treptow - Köpenick,2026,2868,2468,16.2,5

@@ -1,5 +1,11 @@
 # Changelog
 
+## Release polish (2026-11-26)
+- All outputs committed: the 11 SQL result tables in `reports/analysis_tables/`, `reports/README.md`, generated dbt lineage diagram (`docs/DBT_LINEAGE.md`).
+- README: results gallery (11 charts, each captioned with its finding), refreshed app screenshots trimmed to content and produced by `scripts/capture_screenshots.py`, verification table.
+- App: "Try to break it" panel shows the SQL safety layer live (blocked attacks vs allowed queries); numbers formatted in tables.
+- No built-in AI model names in code or docs (model id is supplied by the user); tests check docs links, screenshots and published text. 117 tests; CI green on GitHub.
+
 ## Final quality pass (2026-11-26)
 - Evaluation: `--preflight`, no report if every call fails at the provider, `score_questions()` refactor, end-to-end harness test with a perfect and a junk model; cost estimate (about 50k input tokens per run).
 - Power BI: reference values for all 30 DAX measures (`src/powerbi_expected.py`, `docs/POWERBI_EXPECTED_VALUES.md`, `tests/test_powerbi_measures.py`); guide now warns about the German-locale CSV import pitfall (set locale to English (United States)) and adds date-table checks.

@@ -79,6 +79,17 @@ def provider_or_none():
         return None
 
 
+def pretty(df: pd.DataFrame) -> pd.DataFrame:
+    """Format numbers for st.table (which prints raw floats): thousands separators, 2 decimals, integers stay integers."""
+    out = df.copy()
+    for c in out.columns:
+        if pd.api.types.is_float_dtype(out[c]):
+            out[c] = out[c].map(lambda v: "" if pd.isna(v) else (f"{v:,.0f}" if float(v).is_integer() else f"{v:,.2f}"))
+        elif pd.api.types.is_integer_dtype(out[c]):
+            out[c] = out[c].map(lambda v: f"{v:,}")
+    return out
+
+
 def footer():
     st.caption("Data: Inside Airbnb (insideairbnb.com), Berlin, scraped 19 Sep 2026, CC BY 4.0 - not affiliated with Airbnb. "
                "Occupancy and revenue are ESTIMATES from a review-based model; the calendar cannot separate booked from blocked nights; "
@@ -276,7 +287,7 @@ with tab4:
         elif res["df"] is not None:
             st.markdown("**Result**")
             if len(res["df"]) <= 15:
-                st.table(res["df"].round(2).reset_index(drop=True))
+                st.table(pretty(res["df"]).reset_index(drop=True))
             else:
                 st.dataframe(res["df"], hide_index=True, width="stretch")
             if res["truncated"]:
@@ -284,6 +295,30 @@ with tab4:
             d = res["df"]
             if d.shape[1] == 2 and 1 < len(d) <= 40 and pd.api.types.is_numeric_dtype(d.iloc[:, 1]) and not pd.api.types.is_numeric_dtype(d.iloc[:, 0]):
                 st.bar_chart(d.set_index(d.columns[0]))
+    st.markdown("### Try to break it: the safety layer")
+    st.caption("Whatever an LLM (or you) writes goes through the same checks before anything runs. Pick an attack or type your own SQL; the verdict appears immediately.")
+    ATTACKS = {
+        "Delete a table": "DROP TABLE dim_listing",
+        "Two statements": "SELECT 1; DELETE FROM fact_listing",
+        "Read a file from disk": "SELECT * FROM read_csv('/etc/passwd')",
+        "List the system catalogue": "SELECT * FROM information_schema.tables",
+        "Read an environment variable": "SELECT getenv('LLM_API_KEY')",
+        "A harmless allowed query": "SELECT room_type, COUNT(*) AS listings FROM dim_listing GROUP BY room_type ORDER BY listings DESC",
+    }
+    st.session_state.setdefault("attack_sql", ATTACKS["Delete a table"])
+
+    def _load_example():                                  # selecting an example replaces the text box content
+        st.session_state["attack_sql"] = ATTACKS[st.session_state["attack_pick"]]
+
+    c1, c2 = st.columns([1, 2])
+    c1.selectbox("Example", list(ATTACKS), key="attack_pick", on_change=_load_example)
+    typed = c2.text_area("SQL to check", key="attack_sql", height=90)
+    try:
+        df_chk, _, _ = execute_safe(get_con(), typed, ALLOWED_TABLES)
+        st.success("ALLOWED: validated as a single read-only SELECT on allow-listed tables and executed on the locked database.")
+        st.table(pretty(df_chk.head(10)).reset_index(drop=True))
+    except Exception as ex:
+        st.error(f"BLOCKED before execution: {ex}")
     with st.expander("How this works and why it is safe"):
         st.markdown("""
 1. An LLM (when a key is configured) turns your question into **one DuckDB SELECT** using only the table schema, never data rows.

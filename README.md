@@ -40,6 +40,27 @@ Windows PowerShell without activating a venv: `python -m venv venv; .\venv\Scrip
 - **90-night cap (scenario, not legal advice):** if 20% of single-host entire homes were capped second homes, about 2.6% of estimated market revenue would be affected ([scenario](docs/REGULATION_SCENARIO.md)).
 - **Assistant safety:** the LLM writes SQL but is never trusted: one SELECT validated by DuckDB's parser, table allow-list, locked in-memory database with no file access, 200-row limit, 8 s timeout; 36 of 36 attack strings blocked in tests.
 
+## Results gallery
+**Market (V1)**
+
+| | |
+|---|---|
+| ![Price map](docs/img/05_price_map.png)<br>**Where prices are high:** median nightly price by neighbourhood; the centre (Mitte, Prenzlauer Berg) is dearest, areas with under 20 listings are greyed out. | ![Price by district](docs/img/04_price_by_district.png)<br>**Entire homes by district:** Mitte 205 EUR down to Reinickendorf 115 EUR; sample sizes shown. |
+| ![Seasonality](docs/img/06_seasonality.png)<br>**Seasonality (review proxy):** September, July, June, October strongest; January weakest (index 0.63). The 2020 dip is COVID-19. | ![Revenue](docs/img/08_revenue.png)<br>**Estimated income is skewed:** median 19.6k vs mean 25.7k EUR/year; the top 10% of listings earn about a third of revenue. Low/base/high = model uncertainty. |
+| ![Forward calendar](docs/img/07_forward_availability.png)<br>**Forward calendar:** share of nights booked or blocked by week, with event labels. Mixes seasonality with booking lead time, so read it as directional. | ![Demand growth](docs/img/09_demand_growth.png)<br>**Demand growth Jan-Aug 2026 vs 2025:** 10 of 12 districts grew (de-duplicated reviews); small districts have small bases. |
+
+**Pricing model and scenario (V2)**
+
+| | |
+|---|---|
+| ![SHAP](docs/img/10_shap_importance.png)<br>**What drives the predicted price:** room type, bedrooms, neighbourhood and guest capacity (mean absolute SHAP on log price). | ![Model error](docs/img/11_model_error_segments.png)<br>**Where the model helps and where it does not:** MAPE by capacity and price band, baseline vs LightGBM, on hosts the model never saw. |
+| ![Cap scenario](docs/img/12_cap_scenario.png)<br>**90-night-cap scenario:** share of estimated market revenue affected vs the assumed share of capped second homes (about 2.6% at 20%). A scenario, not a forecast. | ![Correlations](docs/img/03_correlations.png)<br>**What correlates with price:** guest capacity (0.61), bedrooms (0.51), beds (0.49); review scores barely (0.06). |
+
+**Data model, lineage and tests**
+- dbt lineage diagram (generated from the real manifest, renders on GitHub): [docs/DBT_LINEAGE.md](docs/DBT_LINEAGE.md); table grain and keys: [docs/DATA_MODEL.md](docs/DATA_MODEL.md); V1 vs dbt reconciliation: [docs/V1_V2_RECONCILIATION.md](docs/V1_V2_RECONCILIATION.md).
+- Committed result tables: [reports/](reports/README.md) (all 11 SQL answers, model metrics, scenario tables). Executed EDA notebook: [notebooks/01_eda.ipynb](notebooks/01_eda.ipynb).
+- **Power BI:** the dashboard is built from `powerbi/` using [docs/POWERBI_GUIDE.md](docs/POWERBI_GUIDE.md); dashboard screenshots are not part of this repo yet.
+
 ## Architecture
 ```mermaid
 flowchart LR
@@ -64,14 +85,14 @@ pip install -r requirements.txt
 #   .../visualisations/neighbourhoods.csv and .geojson)
 bash scripts/check.sh                 # rebuild V1+dbt+model+scenario+app data, Power BI reference values, tests (PowerShell: .\scripts\check.ps1)
 ```
-Or step by step: `python -m src.run_pipeline` (V1, about 25 s), `python -m src.run_v2` (everything incl. dbt and model), `python -m src.build_app_data`, `python -m pytest -q tests` (95 tests; the ones needing the database skip when it is absent, as in CI).
+Or step by step: `python -m src.run_pipeline` (V1, about 25 s), `python -m src.run_v2` (everything incl. dbt and model), `python -m src.build_app_data`, `python -m pytest -q tests` (117 tests; the ones needing the database skip when it is absent, as in CI).
 
 dbt docs and lineage: `cd dbt_project && dbt docs generate --profiles-dir . && dbt docs serve --profiles-dir .`
 
 ## Verification status
 | Item | Status |
 |---|---|
-| Automated tests | 95 pass locally; CI runs the 66 that need no database |
+| Automated tests | 117 pass locally; CI runs the ones that need no database and passed on GitHub |
 | dbt | 73 nodes pass (29 models/seeds, 44 tests); 19 of 19 tables reconcile with V1 |
 | Power BI guide | **DAX not executed** (Power BI not available when this was built). Every one of the 30 measures has a pandas reference value ([docs/POWERBI_EXPECTED_VALUES.md](docs/POWERBI_EXPECTED_VALUES.md)) and tests keep guide and values in sync |
 | LLM assistant accuracy | **not yet measured** (needs a funded API key). Harness verified: a scripted perfect model scores 100%, a constant-answer model scores ~0; run `python -m eval.run_eval --provider env` ([docs/EVAL.md](docs/EVAL.md)) |

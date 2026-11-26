@@ -1,0 +1,29 @@
+district,room_type,n_listings,zero_review_pct,median_nights_base_all,median_nights_base_reviewed,median_revenue_low_all,median_revenue_base_all,median_revenue_high_all,median_revenue_base_reviewed,p90_revenue_base_all,mean_occ_rate_reviewed,total_est_revenue_base_meur
+Charlottenburg-Wilm.,Entire home/apt,493,15.0,126.0,164.0,12509.0,21675.0,25378.0,26775.0,67165.0,0.436,14.6
+Charlottenburg-Wilm.,Private room,285,17.9,164.0,239.0,9015.0,14459.0,15555.0,16717.0,32181.0,0.476,4.07
+Friedrichshain-Kreuzberg,Entire home/apt,878,7.2,214.0,239.0,22875.0,31032.0,32883.0,32813.0,64298.0,0.487,29.83
+Friedrichshain-Kreuzberg,Private room,337,6.2,202.0,233.0,11571.0,18105.0,18998.0,18517.0,30600.0,0.496,5.9
+Friedrichshain-Kreuzberg,Shared room,26,3.8,139.0,139.0,3551.0,5556.0,5993.0,5757.0,10746.0,0.435,0.16
+Lichtenberg,Entire home/apt,143,8.4,139.0,164.0,12441.0,21165.0,24200.0,23807.0,50275.0,0.439,3.76
+Lichtenberg,Private room,63,14.3,176.0,221.0,7221.0,13130.0,14760.0,14027.0,21899.0,0.505,0.78
+Marzahn - Hellersdorf,Entire home/apt,44,9.1,66.0,93.0,6759.0,10849.0,12882.0,11699.0,37534.0,0.308,0.69
+Marzahn - Hellersdorf,Private room,19,10.5,151.0,151.0,6630.0,10206.0,12798.0,14528.0,20426.0,0.413,0.22
+Mitte,Entire home/apt,1096,12.8,202.0,252.0,20797.0,31876.0,33660.0,35403.0,75225.0,0.493,38.65
+Mitte,Hotel room,16,25.0,13.0,50.0,714.0,1326.0,1632.0,5245.0,53363.0,0.311,0.21
+Mitte,Private room,389,14.9,151.0,214.0,8700.0,15312.0,16590.0,17595.0,31958.0,0.468,6.2
+Mitte,Shared room,30,6.7,126.0,126.0,1397.0,2644.0,3303.0,2898.0,8186.0,0.406,0.13
+Neukölln,Entire home/apt,324,12.3,113.0,139.0,11156.0,19738.0,22983.0,23066.0,50758.0,0.405,7.67
+Neukölln,Private room,200,15.0,126.0,170.0,6030.0,10399.0,12879.0,13180.0,23750.0,0.418,2.37
+Pankow,Entire home/apt,765,6.3,202.0,239.0,20944.0,30996.0,34109.0,32933.0,70081.0,0.489,26.95
+Pankow,Hotel room,15,20.0,151.0,189.0,14362.0,19635.0,19635.0,22440.0,39922.0,0.454,0.34
+Pankow,Private room,200,13.5,140.0,196.0,7420.0,13601.0,15642.0,15428.0,25635.0,0.453,2.91
+Reinickendorf,Entire home/apt,46,4.3,214.0,233.0,14515.0,24382.0,24544.0,24649.0,33868.0,0.491,1.0
+Reinickendorf,Private room,46,21.7,101.0,164.0,5035.0,8556.0,10686.0,11797.0,18233.0,0.399,0.38
+Spandau,Entire home/apt,56,19.6,70.0,113.0,7038.0,12923.0,16179.0,20064.0,39356.0,0.35,1.09
+Spandau,Private room,43,32.6,42.0,164.0,1708.0,2900.0,3712.0,9954.0,19820.0,0.383,0.32
+Steglitz - Zehlendorf,Entire home/apt,111,9.0,88.0,126.0,9850.0,17974.0,22206.0,20412.0,44370.0,0.384,2.49
+Steglitz - Zehlendorf,Private room,58,8.6,170.0,202.0,7965.0,13303.0,15173.0,15045.0,22134.0,0.46,0.73
+Tempelhof - Schöneberg,Entire home/apt,286,12.2,126.0,151.0,12857.0,20704.0,24750.0,25202.0,59789.0,0.428,7.93
+Tempelhof - Schöneberg,Private room,148,13.5,172.0,227.0,7358.0,12673.0,14322.0,14932.0,22007.0,0.478,1.81
+Treptow - Köpenick,Entire home/apt,236,19.1,76.0,101.0,6206.0,11047.0,13868.0,15744.0,39844.0,0.351,3.93
+Treptow - Köpenick,Private room,67,20.9,113.0,164.0,5230.0,9799.0,10508.0,12240.0,19543.0,0.445,0.62
