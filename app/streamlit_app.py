@@ -244,9 +244,9 @@ with tab4:
     demo = [x for x in qs if x["expect"] == "result"]
     question, run_demo = "", False
     if provider is None:
-        pick = st.selectbox("Example question", [x["question"] for x in demo])
-        run_demo = st.button("Run example")
-        question = pick
+        default_i = next((i for i, x in enumerate(demo) if x["question"].startswith("Which district has the highest median price")), 0)
+        question = st.selectbox("Example question (the result appears immediately; pick another to run it)", [x["question"] for x in demo], index=default_i)
+        run_demo = True                                   # demo mode: run on selection, no button needed
     else:
         question = st.text_input("Your question", placeholder="e.g. Which district has the most entire homes above 200 EUR per night?", max_chars=500)
         st.caption("Examples: " + " | ".join(x["question"] for x in demo[:3]))
@@ -266,16 +266,29 @@ with tab4:
             with st.spinner("Generating and checking SQL..."):
                 a = ask(question, provider, get_con())
             res = dict(sql=a.sql, df=a.df, truncated=a.truncated, error=a.error)
+        if provider is None:
+            st.caption("Pre-written query (no LLM involved) - it still passes through the same validation, limits and locked database as a generated query would.")
         if res["sql"]:
             st.markdown("**SQL (validated before execution)**")
             st.code(res["sql"], language="sql")
         if res["error"]:
             st.error(res["error"])
         elif res["df"] is not None:
-            st.dataframe(res["df"], hide_index=True, width="stretch")
+            st.markdown("**Result**")
+            if len(res["df"]) <= 15:
+                st.table(res["df"].round(2).reset_index(drop=True))
+            else:
+                st.dataframe(res["df"], hide_index=True, width="stretch")
             if res["truncated"]:
                 st.caption("Showing the first 200 rows.")
             d = res["df"]
             if d.shape[1] == 2 and 1 < len(d) <= 40 and pd.api.types.is_numeric_dtype(d.iloc[:, 1]) and not pd.api.types.is_numeric_dtype(d.iloc[:, 0]):
                 st.bar_chart(d.set_index(d.columns[0]))
+    with st.expander("How this works and why it is safe"):
+        st.markdown("""
+1. An LLM (when a key is configured) turns your question into **one DuckDB SELECT** using only the table schema, never data rows.
+2. DuckDB's own parser must accept exactly one SELECT; every table must be on the allow-list; file/table functions are rejected.
+3. It runs on an **in-memory, locked** database (no file access), with a 200-row limit and 8 s timeout.
+4. If the SQL fails, the model gets the error once and may repair it. Anything that still fails is shown as a plain error.
+""")
     footer()
