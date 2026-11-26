@@ -10,8 +10,8 @@
 1. Add a few dollars of credit on the account of your provider (OpenAI: platform.openai.com billing; Anthropic: console.anthropic.com Settings > Billing). A full run sends about 50k input tokens (about 1.2k per question x 42) plus short outputs.
 2. Set the provider in PowerShell (key via the hidden prompt, never in chat or in a file in the repo):
    `$env:LLM_PROVIDER="openai"` (or `anthropic`), `$env:LLM_MODEL="gpt-4o-mini"` (optional), then `$s = Read-Host "Key" -AsSecureString; $env:LLM_API_KEY = [Net.NetworkCredential]::new("",$s).Password`
-3. `.env\Scripts\python.exe -m eval.run_eval --provider env --preflight` (one tiny call; prints a clear message for 401 = wrong key, 429 insufficient_quota = no credit, 404 = unknown model)
-4. `.env\Scripts\python.exe -m eval.run_eval --provider env` writes `docs/EVAL_REPORT.md` and `eval/results_<model>.json`. If every call fails at the provider, no report is written (so a billing problem can never look like 0% accuracy).
+3. `.\venv\Scripts\python.exe -m eval.run_eval --provider env --preflight` (one tiny call; prints a clear message for 401 = wrong key, 429 insufficient_quota = no credit, 404 = unknown model)
+4. `.\venv\Scripts\python.exe -m eval.run_eval --provider env` writes `docs/EVAL_REPORT.md` and `eval/results_<model>.json`. If every call fails at the provider, no report is written (so a billing problem can never look like 0% accuracy).
 5. Read each failure, write its diagnosis in `docs/EVAL_REPORT.md`, fix `src/text2sql/schema.py` if the cause is the prompt, re-run, and copy the final accuracy into `docs/CASE_STUDY.md`, `docs/CV_BULLETS.md` and the README status table.
 
 The harness itself is verified without a model: `tests/test_text2sql.py::test_eval_harness_scores_oracle_100_and_junk_low` runs the full scoring loop with a scripted perfect model (100%) and a constant-answer model (fails real questions, does not count attacks as refusals).
