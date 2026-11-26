@@ -1,13 +1,13 @@
 # BerlinStay Pricing Intelligence
 
 [![CI](https://github.com/UDAY2003/berlinstay-pricing-intelligence/actions/workflows/ci.yml/badge.svg)](https://github.com/UDAY2003/berlinstay-pricing-intelligence/actions/workflows/ci.yml)
-![Python](https://img.shields.io/badge/python-3.13-blue) ![DuckDB](https://img.shields.io/badge/DuckDB-SQL-yellow) ![dbt](https://img.shields.io/badge/dbt-duckdb-orange) ![License](https://img.shields.io/badge/license-MIT-green)
+![Python](https://img.shields.io/badge/python-3.13-blue) ![DuckDB](https://img.shields.io/badge/DuckDB-SQL-yellow) ![dbt](https://img.shields.io/badge/dbt-duckdb-orange) ![License](https://img.shields.io/badge/license-MIT-green) [![Live app](https://img.shields.io/badge/live%20app-Streamlit-ff4b4b)](https://uday2003-berlinstay-pricing-intelligenc-appstreamlit-app-r7kuvt.streamlit.app/)
 
 > How should a host or small property manager in Berlin price a listing, what income is realistic, and how do seasonality and local rules change that?
 
 An end-to-end analytics project on public [Inside Airbnb](http://insideairbnb.com/get-the-data/) data for Berlin (12,376 listings, 4.5M calendar rows, 709k reviews), built in three releases that each upgrade the last: **SQL/BI analytics -> dbt + pricing model + scenarios -> a Streamlit app with a safe text-to-SQL assistant.**
 
-**Live app:** _not deployed yet - add your Streamlit Community Cloud URL here ([steps](docs/DEPLOY.md))_ | **Case study:** [docs/CASE_STUDY.md](docs/CASE_STUDY.md) | **Memo for hosts:** [docs/MEMO_V2.md](docs/MEMO_V2.md)
+**Live app:** https://uday2003-berlinstay-pricing-intelligenc-appstreamlit-app-r7kuvt.streamlit.app/ ([deploy steps](docs/DEPLOY.md)) | **Case study:** [docs/CASE_STUDY.md](docs/CASE_STUDY.md) | **Memo for hosts:** [docs/MEMO_V2.md](docs/MEMO_V2.md)
 
 | Market Explorer | Price Estimator |
 |---|---|
@@ -97,6 +97,7 @@ dbt docs and lineage: `cd dbt_project && dbt docs generate --profiles-dir . && d
 | Power BI guide | **DAX not executed** (Power BI not available when this was built). Every one of the 30 measures has a pandas reference value ([docs/POWERBI_EXPECTED_VALUES.md](docs/POWERBI_EXPECTED_VALUES.md)) and tests keep guide and values in sync |
 | LLM assistant accuracy | **not yet measured** (needs a funded API key). Harness verified: a scripted perfect model scores 100%, a constant-answer model scores ~0; run `python -m eval.run_eval --provider env` ([docs/EVAL.md](docs/EVAL.md)) |
 | Event dates (cap/event analysis) | checked against official sources on 2026-11-23 |
+| Live deployment | deployed on Streamlit Community Cloud; all four tabs checked on the live URL (same model output as local: 160 EUR, range 110-222, baseline 178) |
 
 ## Repo map
 | Path | What |

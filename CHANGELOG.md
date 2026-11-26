@@ -1,5 +1,8 @@
 # Changelog
 
+## Live deployment (2026-11-26)
+- App deployed on Streamlit Community Cloud: https://uday2003-berlinstay-pricing-intelligenc-appstreamlit-app-r7kuvt.streamlit.app/. All four tabs checked on the live URL; model output identical to local.
+
 ## Release polish (2026-11-26)
 - All outputs committed: the 11 SQL result tables in `reports/analysis_tables/`, `reports/README.md`, generated dbt lineage diagram (`docs/DBT_LINEAGE.md`).
 - README: results gallery (11 charts, each captioned with its finding), refreshed app screenshots trimmed to content and produced by `scripts/capture_screenshots.py`, verification table.

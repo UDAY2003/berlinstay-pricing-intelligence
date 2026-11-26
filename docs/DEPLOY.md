@@ -35,6 +35,8 @@ LLM_MODEL = "your-model-id"            # required when a provider is set
 Never commit a key. The key is read at runtime from secrets or environment variables, never printed or logged. Without secrets the tab stays in demo mode. Set a spending limit at your LLM provider: the per-session question cap (default 15) limits cost but is not a security control.
 
 ## 4. After deploying
+This project's live app: https://uday2003-berlinstay-pricing-intelligenc-appstreamlit-app-r7kuvt.streamlit.app/ (free apps sleep after inactivity, so the first load can take a few seconds; every push to `main` redeploys it automatically).
+
 - Open the app, check each tab, and in "Ask the data" try one example and one malicious input such as `DROP TABLE dim_listing`.
 - Put the app URL in `README.md` (replace the live-link placeholder) and add 2-3 screenshots to `docs/img/`.
 - Free apps sleep after inactivity; the first load afterwards takes a few seconds.
